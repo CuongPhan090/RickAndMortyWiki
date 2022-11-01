@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RickAndMortyWiki</string>
+    <string name="origin">Origin</string>
+    <string name="species">Species</string>
 </resources>
