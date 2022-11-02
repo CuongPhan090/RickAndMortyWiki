@@ -6,11 +6,16 @@ import com.example.rickandmortywiki.data.remote.NetworkLayer
 class SharedRepository {
     suspend fun getCharacterById(character: Int): GetCharacterByIdResponse? {
         val request = NetworkLayer.apiClient.getCharacterById(character)
-        if (request.isSuccessful) {
-            return request.body()
-        }
-        else {
+
+        // User device network issue
+        if (request.failed) {
             return null
         }
+
+        // Api issue
+        if (!request.isSuccessful)
+            return null
+
+        return request.body
     }
 }
