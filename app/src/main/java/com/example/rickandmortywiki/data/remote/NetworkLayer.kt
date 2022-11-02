@@ -1,16 +1,17 @@
-package com.example.rickandmortywiki.data
+package com.example.rickandmortywiki.data.remote
 
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class Remote {
+object NetworkLayer {
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://rickandmortyapi.com/api/")
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
 
-    private val apiClient = retrofit.create(ClientApi::class.java)
+    private val rickAndMortyService: RickAndMortyService by lazy {
+        retrofit.create(RickAndMortyService::class.java)
+    }
 
-    suspend fun getCharacterById(character: Int) = apiClient.getCharacterById(character)
-
+    val apiClient = ClientApi(rickAndMortyService)
 }
