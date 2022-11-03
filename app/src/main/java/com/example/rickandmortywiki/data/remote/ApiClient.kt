@@ -3,7 +3,7 @@ package com.example.rickandmortywiki.data.remote
 import com.example.rickandmortywiki.data.model.GetCharacterByIdResponse
 import retrofit2.Response
 
-class ClientApi(
+class ApiClient(
     private val rickAndMortyService: RickAndMortyService
 ) {
     suspend fun getCharacterById(character: Int): SimpleResponse<GetCharacterByIdResponse> {

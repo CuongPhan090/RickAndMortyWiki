@@ -13,5 +13,5 @@ object NetworkLayer {
         retrofit.create(RickAndMortyService::class.java)
     }
 
-    val apiClient = ClientApi(rickAndMortyService)
+    val apiClient = ApiClient(rickAndMortyService)
 }

@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/model_character_details_data_point.xml" value="0.33" />
+        <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/model_character_details_header.xml" value="0.33" />
+        <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/model_character_details_image.xml" value="0.25" />
+        <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/model_loading.xml" value="0.25" />
       </map>
     </option>
   </component>
