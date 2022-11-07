@@ -1,4 +1,4 @@
-package com.example.rickandmortywiki
+package com.example.rickandmortywiki.view
 
 import android.os.Bundle
 import androidx.activity.viewModels

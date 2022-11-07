@@ -44,7 +44,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -79,8 +79,15 @@ dependencies {
     // Coil
     implementation 'io.coil-kt:coil:2.0.0-rc02'
 
-    def epoxyVersion = "5.1.0"
+    // Epoxy
+    def epoxyVersion = "4.4.1"
     implementation "com.airbnb.android:epoxy:$epoxyVersion"
+    implementation "com.airbnb.android:epoxy-paging:$epoxyVersion"
     // Add the annotation processor if you are using Epoxy's annotations (recommended)
     annotationProcessor "com.airbnb.android:epoxy-processor:$epoxyVersion"
+
+    // Pagination
+    def paging_version = "2.1.2"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
 }

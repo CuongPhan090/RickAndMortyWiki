@@ -1,8 +1,24 @@
 package com.example.rickandmortywiki.data.model
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
+data class GetListOfCharacter(
+    val info: Info? = null,
+    val results: List<GetCharacterByIdResponse>? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class Info(
+    val count: Int? = 0,
+    val next: String? = null,
+    val pages: Int? = 0,
+    val prev: Any?= null
+)
+
+@JsonClass(generateAdapter = true)
+@Json(name = "Result")
 data class GetCharacterByIdResponse(
     val created: String? = null,
     val episode: List<String>? = null,
