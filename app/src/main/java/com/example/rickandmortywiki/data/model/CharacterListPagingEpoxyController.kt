@@ -8,12 +8,14 @@ import com.example.rickandmortywiki.databinding.ModelCharacterListBinding
 import com.example.rickandmortywiki.databinding.ModelCharacterListTitleBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
 
-class CharacterListPagingEpoxyController : PagedListEpoxyController<GetCharacterByIdResponse>() {
+class CharacterListPagingEpoxyController(
+    private val onCharacterClick: (Int) -> Unit
+) : PagedListEpoxyController<GetCharacterByIdResponse>() {
     override fun buildItemModel(
         currentPosition: Int,
         item: GetCharacterByIdResponse?
     ): EpoxyModel<*> {
-        return CharacterGridItemEpoxyModel(item).id(item?.id)
+        return CharacterGridItemEpoxyModel(item, onCharacterClick).id(item?.id)
     }
 
     // Create different section in the scroll view
@@ -37,13 +39,22 @@ class CharacterListPagingEpoxyController : PagedListEpoxyController<GetCharacter
     }
 
     data class CharacterGridItemEpoxyModel(
-       val item: GetCharacterByIdResponse?
+        val item: GetCharacterByIdResponse?,
+        private val onCharacterClick: (Int) -> Unit
     ) : ViewBindingKotlinModel<ModelCharacterListBinding>(R.layout.model_character_list) {
         override fun ModelCharacterListBinding.bind() {
-            characterImageView.load(item?.image)
-            characterNameTextView.text = item?.name
+            item?.let { character ->
+                characterImageView.load(character.image)
+                characterNameTextView.text = character.name
+                character.id?.let {
+                    root.setOnClickListener {
+                        onCharacterClick(character.id)
+                    }
+                }
+            }
         }
     }
+
 
     data class CharacterListTitleEpoxyModel(
         private val title: String
