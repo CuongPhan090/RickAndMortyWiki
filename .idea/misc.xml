@@ -5,7 +5,10 @@
       <map>
         <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/activity_character_list.xml" value="0.1" />
         <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/activity_main.xml" value="0.12037037037037036" />
+        <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/model_character_details_data_point.xml" value="0.27685185185185185" />
         <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/model_character_list.xml" value="0.18" />
+        <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/model_character_list_title.xml" value="0.25" />
+        <entry key="..\:/Users/DNA/AndroidStudioProjects/RickAndMortyWiki/app/src/main/res/layout/model_loading.xml" value="0.27685185185185185" />
       </map>
     </option>
   </component>
