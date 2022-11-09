@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.example.rickandmortywiki.data.model.CharacterListPagingEpoxyController
+import com.example.rickandmortywiki.epoxy.uimodel.CharacterListPagingEpoxyController
 import com.example.rickandmortywiki.databinding.ActivityCharacterListBinding
 import com.example.rickandmortywiki.util.Constant
 import com.example.rickandmortywiki.viewmodel.SharedViewModel

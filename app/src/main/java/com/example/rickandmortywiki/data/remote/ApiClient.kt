@@ -1,13 +1,13 @@
 package com.example.rickandmortywiki.data.remote
 
-import com.example.rickandmortywiki.data.model.GetCharacterByIdResponse
-import com.example.rickandmortywiki.data.model.GetListOfCharacter
+import com.example.rickandmortywiki.model.CharacterByIdResponse
+import com.example.rickandmortywiki.model.GetListOfCharacter
 import retrofit2.Response
 
 class ApiClient(
     private val rickAndMortyService: RickAndMortyService
 ) {
-    suspend fun getCharacterById(character: Int): SimpleResponse<GetCharacterByIdResponse> {
+    suspend fun getCharacterById(character: Int): SimpleResponse<CharacterByIdResponse> {
         return safeApiCall { rickAndMortyService.getCharacterById(character) }
     }
 

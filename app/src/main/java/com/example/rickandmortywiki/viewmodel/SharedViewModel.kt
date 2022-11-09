@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.rickandmortywiki.data.model.GetCharacterByIdResponse
+import com.example.rickandmortywiki.model.CharacterByIdResponse
 import com.example.rickandmortywiki.data.pagination.CharactersDataSourceFactory
+import com.example.rickandmortywiki.model.Character
 import com.example.rickandmortywiki.repository.SharedRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,9 +21,9 @@ class SharedViewModel : ViewModel() {
     private val apiRepository = SharedRepository()
 
 
-    private val _characterDetail: MutableStateFlow<GetCharacterByIdResponse?> =
-        MutableStateFlow(GetCharacterByIdResponse())
-    val characterDetail: StateFlow<GetCharacterByIdResponse?>
+    private val _characterDetail: MutableStateFlow<Character?> =
+        MutableStateFlow(Character())
+    val characterDetail: StateFlow<Character?>
         get() = _characterDetail.asStateFlow()
 
 
@@ -42,7 +43,7 @@ class SharedViewModel : ViewModel() {
         repository = apiRepository
     )
 
-    val listOfCharacters: LiveData<PagedList<GetCharacterByIdResponse>> = LivePagedListBuilder(
+    val listOfCharacters: LiveData<PagedList<CharacterByIdResponse>> = LivePagedListBuilder(
         dataSourceFactory,
         pageListConfig
     ).build()

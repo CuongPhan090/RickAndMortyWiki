@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rickandmortywiki.data.model.CharacterDetailsEpoxyController
+import com.example.rickandmortywiki.epoxy.uimodel.CharacterDetailsEpoxyController
 import com.example.rickandmortywiki.databinding.ActivityCharacterDetailBinding
 import com.example.rickandmortywiki.util.Constant
 import com.example.rickandmortywiki.viewmodel.SharedViewModel

@@ -1,4 +1,4 @@
-package com.example.rickandmortywiki.data.model
+package com.example.rickandmortywiki.epoxy.uimodel
 
 import coil.load
 import com.airbnb.epoxy.EpoxyModel
@@ -7,13 +7,14 @@ import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.ModelCharacterListBinding
 import com.example.rickandmortywiki.databinding.ModelCharacterListTitleBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
+import com.example.rickandmortywiki.model.CharacterByIdResponse
 
 class CharacterListPagingEpoxyController(
     private val onCharacterClick: (Int) -> Unit
-) : PagedListEpoxyController<GetCharacterByIdResponse>() {
+) : PagedListEpoxyController<CharacterByIdResponse>() {
     override fun buildItemModel(
         currentPosition: Int,
-        item: GetCharacterByIdResponse?
+        item: CharacterByIdResponse?
     ): EpoxyModel<*> {
         return CharacterGridItemEpoxyModel(item, onCharacterClick).id(item?.id)
     }
@@ -39,7 +40,7 @@ class CharacterListPagingEpoxyController(
     }
 
     data class CharacterGridItemEpoxyModel(
-        val item: GetCharacterByIdResponse?,
+        val item: CharacterByIdResponse?,
         private val onCharacterClick: (Int) -> Unit
     ) : ViewBindingKotlinModel<ModelCharacterListBinding>(R.layout.model_character_list) {
         override fun ModelCharacterListBinding.bind() {

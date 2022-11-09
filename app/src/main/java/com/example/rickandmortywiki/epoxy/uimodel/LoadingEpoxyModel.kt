@@ -1,4 +1,4 @@
-package com.example.rickandmortywiki.data.model
+package com.example.rickandmortywiki.epoxy.uimodel
 
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.ModelLoadingBinding

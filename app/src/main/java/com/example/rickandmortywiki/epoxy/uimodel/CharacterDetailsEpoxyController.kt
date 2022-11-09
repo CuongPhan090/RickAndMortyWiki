@@ -1,4 +1,4 @@
-package com.example.rickandmortywiki.data.model
+package com.example.rickandmortywiki.epoxy.uimodel
 
 import android.graphics.BitmapFactory
 import coil.load
@@ -8,6 +8,7 @@ import com.example.rickandmortywiki.databinding.ModelCharacterDetailsDataPointBi
 import com.example.rickandmortywiki.databinding.ModelCharacterDetailsHeaderBinding
 import com.example.rickandmortywiki.databinding.ModelCharacterDetailsImageBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
+import com.example.rickandmortywiki.model.Character
 
 class CharacterDetailsEpoxyController : EpoxyController() {
     // if data is being fetched, display progress bar
@@ -20,7 +21,7 @@ class CharacterDetailsEpoxyController : EpoxyController() {
         }
 
     // remove progress bar once data has been fetched
-    var characterResponse: GetCharacterByIdResponse? = null
+    var characterResponse: Character? = null
         set(value) {
             field = value
             if (field != null) {

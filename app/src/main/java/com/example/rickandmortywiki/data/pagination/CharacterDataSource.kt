@@ -1,7 +1,7 @@
 package com.example.rickandmortywiki.data.pagination
 
 import androidx.paging.PageKeyedDataSource
-import com.example.rickandmortywiki.data.model.GetCharacterByIdResponse
+import com.example.rickandmortywiki.model.CharacterByIdResponse
 import com.example.rickandmortywiki.repository.SharedRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 class CharacterDataSource(
     private val coroutineScope: CoroutineScope,
     private val repository: SharedRepository
-) : PageKeyedDataSource<Int, GetCharacterByIdResponse>() {
+) : PageKeyedDataSource<Int, CharacterByIdResponse>() {
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, GetCharacterByIdResponse>
+        callback: LoadInitialCallback<Int, CharacterByIdResponse>
     ) {
         coroutineScope.launch {
             val page = repository.getListOfCharacters(1)
@@ -39,7 +39,7 @@ class CharacterDataSource(
 
     override fun loadAfter(
         params: LoadParams<Int>,
-        callback: LoadCallback<Int, GetCharacterByIdResponse>
+        callback: LoadCallback<Int, CharacterByIdResponse>
     ) {
         coroutineScope.launch {
             val page = repository.getListOfCharacters(params.key)
@@ -63,7 +63,7 @@ class CharacterDataSource(
 
     override fun loadBefore(
         params: LoadParams<Int>,
-        callback: LoadCallback<Int, GetCharacterByIdResponse>
+        callback: LoadCallback<Int, CharacterByIdResponse>
     ) {
         // Nothing to do
     }
