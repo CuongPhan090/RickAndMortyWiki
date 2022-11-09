@@ -1,7 +1,7 @@
 package com.example.rickandmortywiki.data.pagination
 
 import androidx.paging.DataSource
-import com.example.rickandmortywiki.model.CharacterByIdResponse
+import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.repository.SharedRepository
 import kotlinx.coroutines.CoroutineScope
 

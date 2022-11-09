@@ -1,4 +1,4 @@
-package com.example.rickandmortywiki.model
+package com.example.rickandmortywiki.model.networkresponse
 
 import com.squareup.moshi.JsonClass
 

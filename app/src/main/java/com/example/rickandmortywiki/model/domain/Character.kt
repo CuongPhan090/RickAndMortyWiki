@@ -1,4 +1,7 @@
-package com.example.rickandmortywiki.model
+package com.example.rickandmortywiki.model.domain
+
+import com.example.rickandmortywiki.model.networkresponse.Location
+import com.example.rickandmortywiki.model.networkresponse.Origin
 
 data class Character(
     val episode: List<Episode>? = null,
@@ -10,9 +13,4 @@ data class Character(
     val origin: Origin? = null,
     val species: String? = null,
     val status: String? = null,
-)
-
-data class Episode(
-    val id: Int? = null,
-    val name: String? = null
 )

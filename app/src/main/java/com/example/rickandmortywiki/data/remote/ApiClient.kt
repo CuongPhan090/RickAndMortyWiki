@@ -1,7 +1,8 @@
 package com.example.rickandmortywiki.data.remote
 
-import com.example.rickandmortywiki.model.CharacterByIdResponse
-import com.example.rickandmortywiki.model.GetListOfCharacter
+import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
+import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdResponse
+import com.example.rickandmortywiki.model.networkresponse.GetListOfCharacter
 import retrofit2.Response
 
 class ApiClient(
@@ -13,6 +14,14 @@ class ApiClient(
 
     suspend fun getListOfCharacters(pageIndex: Int): SimpleResponse<GetListOfCharacter> {
         return safeApiCall { rickAndMortyService.getListOfCharacter(pageIndex) }
+    }
+
+    suspend fun getSingleEpisode(episodeId: Int): SimpleResponse<EpisodeByIdResponse> {
+        return safeApiCall { rickAndMortyService.getSingleEpisode(episodeId) }
+    }
+
+    suspend fun getListOfEpisode(episodeRange: String): SimpleResponse<List<EpisodeByIdResponse>> {
+        return safeApiCall { rickAndMortyService.getListOfEpisode(episodeRange) }
     }
 
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>): SimpleResponse<T> {

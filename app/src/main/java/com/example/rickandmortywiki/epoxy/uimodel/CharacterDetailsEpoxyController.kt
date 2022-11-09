@@ -8,7 +8,7 @@ import com.example.rickandmortywiki.databinding.ModelCharacterDetailsDataPointBi
 import com.example.rickandmortywiki.databinding.ModelCharacterDetailsHeaderBinding
 import com.example.rickandmortywiki.databinding.ModelCharacterDetailsImageBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
-import com.example.rickandmortywiki.model.Character
+import com.example.rickandmortywiki.model.domain.Character
 
 class CharacterDetailsEpoxyController : EpoxyController() {
     // if data is being fetched, display progress bar

@@ -7,7 +7,7 @@ import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.ModelCharacterListBinding
 import com.example.rickandmortywiki.databinding.ModelCharacterListTitleBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
-import com.example.rickandmortywiki.model.CharacterByIdResponse
+import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 
 class CharacterListPagingEpoxyController(
     private val onCharacterClick: (Int) -> Unit

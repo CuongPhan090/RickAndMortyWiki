@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.rickandmortywiki.model.CharacterByIdResponse
+import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.data.pagination.CharactersDataSourceFactory
-import com.example.rickandmortywiki.model.Character
+import com.example.rickandmortywiki.model.domain.Character
 import com.example.rickandmortywiki.repository.SharedRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
