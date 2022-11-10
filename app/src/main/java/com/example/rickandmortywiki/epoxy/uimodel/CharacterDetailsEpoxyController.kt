@@ -2,13 +2,13 @@ package com.example.rickandmortywiki.epoxy.uimodel
 
 import android.graphics.BitmapFactory
 import coil.load
+import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.example.rickandmortywiki.R
-import com.example.rickandmortywiki.databinding.ModelCharacterDetailsDataPointBinding
-import com.example.rickandmortywiki.databinding.ModelCharacterDetailsHeaderBinding
-import com.example.rickandmortywiki.databinding.ModelCharacterDetailsImageBinding
+import com.example.rickandmortywiki.databinding.*
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
 import com.example.rickandmortywiki.model.domain.Character
+import com.example.rickandmortywiki.model.domain.Episode
 
 class CharacterDetailsEpoxyController : EpoxyController() {
     // if data is being fetched, display progress bar
@@ -54,6 +54,22 @@ class CharacterDetailsEpoxyController : EpoxyController() {
             image = characterResponse?.image
         ).id("image").addTo(this)
 
+        if (characterResponse?.episode?.isNotEmpty() == true) {
+            val listOfEpisode = characterResponse?.episode?.map {
+                EpisodeCarouselEpoxyModel(it).id(it.id)
+            }
+
+            EpisodeHeader(headerText = "Episodes").id("episode_header").addTo(this)
+
+            listOfEpisode?.let {
+                CarouselModel_()
+                    .id("episode_carousel")
+                    .models(it)
+                    .numViewsToShowOnScreen(1.25f)
+                    .addTo(this)
+            }
+        }
+
         // add data points model
         DataPointsEpoxyModel(
             title = "Origin",
@@ -64,6 +80,8 @@ class CharacterDetailsEpoxyController : EpoxyController() {
             title = "Specie",
             description = characterResponse?.species
         ).id("specie").addTo(this)
+
+
     }
 
     data class HeaderEpoxyModel(
@@ -103,10 +121,27 @@ class CharacterDetailsEpoxyController : EpoxyController() {
     data class DataPointsEpoxyModel(
         val title: String?,
         val description: String?
-    ): ViewBindingKotlinModel<ModelCharacterDetailsDataPointBinding>(R.layout.model_character_details_data_point) {
+    ) : ViewBindingKotlinModel<ModelCharacterDetailsDataPointBinding>(R.layout.model_character_details_data_point) {
         override fun ModelCharacterDetailsDataPointBinding.bind() {
             label.text = title
             context.text = description
+        }
+    }
+
+    data class EpisodeCarouselEpoxyModel(
+        val episode: Episode
+    ) : ViewBindingKotlinModel<ModelEpisodeCarouselItemsBinding>(R.layout.model_episode_carousel_items) {
+        override fun ModelEpisodeCarouselItemsBinding.bind() {
+            episodeSeason.text = episode.episode
+            episodeName.text = episode.name
+            episodeAirDay.text = episode.airDate
+        }
+    }
+
+    data class EpisodeHeader(val headerText: String) :
+        ViewBindingKotlinModel<ModelHeaderBinding>(R.layout.model_header) {
+        override fun ModelHeaderBinding.bind() {
+            header.text = headerText
         }
     }
 }
