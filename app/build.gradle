@@ -90,4 +90,10 @@ dependencies {
     def paging_version = "2.1.2"
     implementation "androidx.paging:paging-runtime:$paging_version"
 
+    // Logging interceptor
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+
+    // Chucker
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 }
