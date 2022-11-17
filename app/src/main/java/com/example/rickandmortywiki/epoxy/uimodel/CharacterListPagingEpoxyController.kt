@@ -22,7 +22,7 @@ class CharacterListPagingEpoxyController(
     // Create different section in the scroll view
     override fun addModels(models: List<EpoxyModel<*>>) {
         if (models.isEmpty()) {
-            LoadingEpoxyModel().id("loading").addTo(this)
+            LoadingEpoxyModel().id("loadingCharacterList").addTo(this)
             return
         }
 

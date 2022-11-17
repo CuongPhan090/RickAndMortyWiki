@@ -8,4 +8,8 @@ class LoadingEpoxyModel: ViewBindingKotlinModel<ModelLoadingBinding>(R.layout.mo
     override fun ModelLoadingBinding.bind() {
         // TODO: nothing
     }
+
+    override fun getSpanSize(totalSpanCount: Int, position: Int, itemCount: Int): Int {
+        return totalSpanCount
+    }
 }
