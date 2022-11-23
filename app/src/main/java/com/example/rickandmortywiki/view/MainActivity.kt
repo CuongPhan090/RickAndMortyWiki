@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.navView.setupWithNavController(navController)
+        binding.navView.setCheckedItem(navController.graph.startDestinationId)
     }
 
     override fun onSupportNavigateUp(): Boolean {
