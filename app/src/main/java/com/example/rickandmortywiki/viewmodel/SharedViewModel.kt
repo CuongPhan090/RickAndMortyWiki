@@ -7,7 +7,8 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.data.pagination.CharactersDataSourceFactory
-import com.example.rickandmortywiki.model.domain.Character
+import com.example.rickandmortywiki.data.remote.NetworkCache
+import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.repository.SharedRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,15 +22,22 @@ class SharedViewModel : ViewModel() {
     private val apiRepository = SharedRepository()
 
 
-    private val _characterDetail: MutableStateFlow<Character?> =
-        MutableStateFlow(Character())
-    val characterDetail: StateFlow<Character?>
-        get() = _characterDetail.asStateFlow()
+    private val _charactersDetail: MutableStateFlow<Characters?> =
+        MutableStateFlow(Characters())
+    val charactersDetail: StateFlow<Characters?>
+        get() = _charactersDetail.asStateFlow()
 
 
     fun refreshCharacter(characterId: Int) {
-        viewModelScope.launch {
-            _characterDetail.value = apiRepository.getCharacterById(characterId)
+        val cachedCharacter = NetworkCache.characterResponseMap
+        cachedCharacter[characterId]?.let {
+            _charactersDetail.value = it
+        } ?: run {
+            viewModelScope.launch {
+                val newCharacterResponse = apiRepository.getCharacterById(characterId)
+                _charactersDetail.value = newCharacterResponse
+                cachedCharacter[characterId] = newCharacterResponse
+            }
         }
     }
 

@@ -2,13 +2,13 @@ package com.example.rickandmortywiki.repository
 
 import com.example.rickandmortywiki.model.networkresponse.GetListOfCharacter
 import com.example.rickandmortywiki.data.remote.NetworkLayer
-import com.example.rickandmortywiki.model.domain.Character
+import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.model.DataTransformUtils
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdResponse
 
 class SharedRepository {
-    suspend fun getCharacterById(character: Int): Character? {
+    suspend fun getCharacterById(character: Int): Characters? {
         val request = NetworkLayer.apiClient.getCharacterById(character)
 
         // User device network issue

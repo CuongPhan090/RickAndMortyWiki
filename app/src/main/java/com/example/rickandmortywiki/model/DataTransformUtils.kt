@@ -1,6 +1,6 @@
 package com.example.rickandmortywiki.model
 
-import com.example.rickandmortywiki.model.domain.Character
+import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdResponse
@@ -10,8 +10,8 @@ object DataTransformUtils {
     fun transformCharacterResponseToCharacter(
         response: CharacterByIdResponse?,
         episode: List<EpisodeByIdResponse>?
-    ): Character? {
-        return Character(
+    ): Characters? {
+        return Characters(
             episode = episode?.map {
                 transformEpisodeResponseToEpisode(it)
             },

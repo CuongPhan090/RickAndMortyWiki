@@ -7,7 +7,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.*
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
-import com.example.rickandmortywiki.model.domain.Character
+import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.model.domain.Episode
 
 class CharacterDetailsEpoxyController : EpoxyController() {
@@ -21,7 +21,7 @@ class CharacterDetailsEpoxyController : EpoxyController() {
         }
 
     // remove progress bar once data has been fetched
-    var characterResponse: Character? = null
+    var charactersResponse: Characters? = null
         set(value) {
             field = value
             if (field != null) {
@@ -37,25 +37,25 @@ class CharacterDetailsEpoxyController : EpoxyController() {
             return
         }
 
-        if (characterResponse == null) {
+        if (charactersResponse == null) {
             // TODO: Handle error
             return
         }
 
         // add header model
         HeaderEpoxyModel(
-            name = characterResponse?.name,
-            gender = characterResponse?.gender,
-            status = characterResponse?.status
+            name = charactersResponse?.name,
+            gender = charactersResponse?.gender,
+            status = charactersResponse?.status
         ).id("header").addTo(this)
 
         // add image model
         ImageEpoxyModel(
-            image = characterResponse?.image
+            image = charactersResponse?.image
         ).id("image").addTo(this)
 
-        if (characterResponse?.episode?.isNotEmpty() == true) {
-            val listOfEpisode = characterResponse?.episode?.map {
+        if (charactersResponse?.episode?.isNotEmpty() == true) {
+            val listOfEpisode = charactersResponse?.episode?.map {
                 EpisodeCarouselEpoxyModel(it).id(it.id)
             }
 
@@ -73,12 +73,12 @@ class CharacterDetailsEpoxyController : EpoxyController() {
         // add data points model
         DataPointsEpoxyModel(
             title = "Origin",
-            description = characterResponse?.origin?.name
+            description = charactersResponse?.origin?.name
         ).id("origin").addTo(this)
 
         DataPointsEpoxyModel(
             title = "Specie",
-            description = characterResponse?.species
+            description = charactersResponse?.species
         ).id("specie").addTo(this)
 
 

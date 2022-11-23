@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentCharacterDetailBinding
 import com.example.rickandmortywiki.epoxy.uimodel.CharacterDetailsEpoxyController
@@ -33,8 +32,8 @@ class CharacterDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.characterDetail.collect { character ->
-                epoxyController.characterResponse = character
+            viewModel.charactersDetail.collect { character ->
+                epoxyController.charactersResponse = character
             }
         }
         viewModel.refreshCharacter(args.characterIndex)
