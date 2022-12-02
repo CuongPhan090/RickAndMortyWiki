@@ -35,6 +35,6 @@
     <fragment
         android:id="@+id/allEpisodesFragment"
         android:name="com.example.rickandmortywiki.view.AllEpisodesFragment"
-        android:label="fragment_all_episodes"
+        android:label="All Episodes"
         tools:layout="@layout/fragment_all_episodes" />
 </navigation>

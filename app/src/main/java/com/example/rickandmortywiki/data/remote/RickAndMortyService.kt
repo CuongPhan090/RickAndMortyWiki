@@ -1,5 +1,6 @@
 package com.example.rickandmortywiki.data.remote
 
+import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdPagingSource
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdResponse
 import com.example.rickandmortywiki.model.networkresponse.GetListOfCharacter
@@ -13,7 +14,7 @@ interface RickAndMortyService {
     @GET("character/{character-id}")
     suspend fun getCharacterById(@Path("character-id") characterId: Int): Response<CharacterByIdResponse>
 
-    @GET("character")
+    @GET("character/")
     suspend fun getListOfCharacter(@Query("page") pageIndex: Int): Response<GetListOfCharacter>
 
     @GET("episode/{episode-id}")
@@ -21,5 +22,8 @@ interface RickAndMortyService {
 
     @GET("episode/{episode-range}")
     suspend fun getListOfEpisode(@Path("episode-range") episodeRange: String): Response<List<EpisodeByIdResponse>>
+
+    @GET("episode/")
+    suspend fun getEpisodeByPageId(@Query("page") pageIndex: Int): Response<EpisodeByIdPagingSource>
 
 } 

@@ -1,5 +1,6 @@
 package com.example.rickandmortywiki.data.remote
 
+import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdPagingSource
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdResponse
 import com.example.rickandmortywiki.model.networkresponse.GetListOfCharacter
@@ -23,6 +24,11 @@ class ApiClient(
     suspend fun getListOfEpisode(episodeRange: String): SimpleResponse<List<EpisodeByIdResponse>> {
         return safeApiCall { rickAndMortyService.getListOfEpisode(episodeRange) }
     }
+
+    suspend fun getEpisodeByPageId(pageIndex: Int): SimpleResponse<EpisodeByIdPagingSource> {
+        return safeApiCall { rickAndMortyService.getEpisodeByPageId(pageIndex) }
+    }
+
 
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>): SimpleResponse<T> {
         return try {

@@ -83,14 +83,15 @@ dependencies {
     implementation 'io.coil-kt:coil:2.0.0-rc02'
 
     // Epoxy
-    def epoxyVersion = "4.4.1"
+    def epoxyVersion = "4.6.2"
     implementation "com.airbnb.android:epoxy:$epoxyVersion"
     implementation "com.airbnb.android:epoxy-paging:$epoxyVersion"
+    implementation "com.airbnb.android:epoxy-paging3:$epoxyVersion"
     // Add the annotation processor if you are using Epoxy's annotations (recommended)
     annotationProcessor "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
-    // Pagination
-    def paging_version = "2.1.2"
+    // Paging 3
+    def paging_version = "3.0.0"
     implementation "androidx.paging:paging-runtime:$paging_version"
 
     // Logging interceptor

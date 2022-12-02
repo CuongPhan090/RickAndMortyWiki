@@ -26,7 +26,7 @@ object DataTransformUtils {
         )
     }
 
-    private fun transformEpisodeResponseToEpisode(response: EpisodeByIdResponse?): Episode {
+    fun transformEpisodeResponseToEpisode(response: EpisodeByIdResponse?): Episode {
         return Episode(
             id = response?.id,
             name = response?.name,

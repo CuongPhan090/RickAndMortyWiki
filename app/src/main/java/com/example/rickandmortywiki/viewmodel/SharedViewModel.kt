@@ -3,11 +3,10 @@ package com.example.rickandmortywiki.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.*
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.data.pagination.CharactersDataSourceFactory
-import com.example.rickandmortywiki.data.remote.NetworkCache
+import com.example.rickandmortywiki.data.pagination.EpisodePagingSource
 import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.repository.SharedRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +20,15 @@ private const val PREFETCH_DISTANCE = PAGE_SIZE * 2 // page size x 2 or 3
 class SharedViewModel : ViewModel() {
     private val apiRepository = SharedRepository()
 
+    val flow = Pager(
+        PagingConfig(
+            pageSize = PAGE_SIZE,
+            prefetchDistance = PREFETCH_DISTANCE,
+            enablePlaceholders = false
+        )
+    ) {
+        EpisodePagingSource(apiRepository)
+    }.flow.cachedIn(viewModelScope)
 
     private val _charactersDetail: MutableStateFlow<Characters?> =
         MutableStateFlow(Characters())
@@ -28,17 +36,12 @@ class SharedViewModel : ViewModel() {
         get() = _charactersDetail.asStateFlow()
 
 
-    fun refreshCharacter(characterId: Int) {
-        val cachedCharacter = NetworkCache.characterResponseMap
-        cachedCharacter[characterId]?.let {
-            _charactersDetail.value = it
-        } ?: run {
-            viewModelScope.launch {
-                val newCharacterResponse = apiRepository.getCharacterById(characterId)
-                _charactersDetail.value = newCharacterResponse
-                cachedCharacter[characterId] = newCharacterResponse
-            }
-        }
+    fun refreshCharacter(characterId: Int) = viewModelScope.launch {
+        _charactersDetail.value = apiRepository.getCharacterById(characterId)
+    }
+
+    fun getAllEpisode(pageNumber: Int): Any = viewModelScope.launch {
+        apiRepository.getEpisodeByPageId(pageNumber)
     }
 
     private val pageListConfig: PagedList.Config = PagedList.Config.Builder()

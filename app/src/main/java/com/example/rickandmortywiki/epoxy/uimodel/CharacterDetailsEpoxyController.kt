@@ -1,6 +1,7 @@
 package com.example.rickandmortywiki.epoxy.uimodel
 
 import android.graphics.BitmapFactory
+import android.util.Log
 import coil.load
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
