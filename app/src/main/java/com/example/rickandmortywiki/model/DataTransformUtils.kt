@@ -31,7 +31,28 @@ object DataTransformUtils {
             id = response?.id,
             name = response?.name,
             airDate = response?.air_date,
-            episode = response?.episode
+            season = getSeasonFromEpisodeString(response?.episode),
+            episode = getEpisodeFromEpisodeString(response?.episode)
         )
+    }
+
+    private fun getSeasonFromEpisodeString(episodeString: String?): Int {
+        episodeString?.let { episode ->
+            val seasonIndex = episode.indexOfFirst { it.equals('s', true) }
+            if (seasonIndex == -1) {
+                return 0
+            }
+            return episode.substring(seasonIndex + 1, seasonIndex + 3).toIntOrNull() ?: 0
+        } ?: return 0
+    }
+
+    private fun getEpisodeFromEpisodeString(episodeString : String?): Int {
+        episodeString?.let { episode ->
+            val episodeIndex = episode.indexOfFirst { it.equals('e', true) }
+            if (episodeIndex == -1) {
+                return 0
+            }
+            return episode.substring(episodeIndex + 1, episodeIndex + 3).toIntOrNull() ?: 0
+        } ?: return 0
     }
 }

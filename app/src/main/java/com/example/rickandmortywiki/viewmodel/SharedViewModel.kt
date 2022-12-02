@@ -7,11 +7,14 @@ import androidx.paging.*
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.data.pagination.CharactersDataSourceFactory
 import com.example.rickandmortywiki.data.pagination.EpisodePagingSource
+import com.example.rickandmortywiki.model.EpisodeUiModel
 import com.example.rickandmortywiki.model.domain.Characters
+import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.repository.SharedRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 private const val PAGE_SIZE = 20
@@ -28,7 +31,33 @@ class SharedViewModel : ViewModel() {
         )
     ) {
         EpisodePagingSource(apiRepository)
-    }.flow.cachedIn(viewModelScope)
+    }.flow.cachedIn(viewModelScope).map {
+        it.insertSeparators { model: EpisodeUiModel?, model2: EpisodeUiModel? ->
+            // Initial separator for the first season header (before the whole list)
+            if (model == null) {
+                return@insertSeparators EpisodeUiModel.Header("Season 1")
+            }
+
+            // Footer
+            if (model2 == null) {
+                return@insertSeparators null
+            }
+
+            // Make sure we only care the items (episodes)
+            if (model is EpisodeUiModel.Header || model2 is EpisodeUiModel.Header) {
+                return@insertSeparators null
+            }
+
+            // Determine if a separator is needed
+            val episode1 = (model as EpisodeUiModel.Item).episode
+            val episode2 = (model2 as EpisodeUiModel.Item).episode
+            return@insertSeparators if (episode2.season != episode1.season) {
+                EpisodeUiModel.Header("Season ${episode2.season}")
+            } else {
+                null
+            }
+        }
+    }
 
     private val _charactersDetail: MutableStateFlow<Characters?> =
         MutableStateFlow(Characters())

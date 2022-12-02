@@ -3,15 +3,16 @@ package com.example.rickandmortywiki.data.pagination
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickandmortywiki.model.DataTransformUtils.transformEpisodeResponseToEpisode
+import com.example.rickandmortywiki.model.EpisodeUiModel
 import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdPagingSource
 import com.example.rickandmortywiki.repository.SharedRepository
 
 class EpisodePagingSource(
     private val apiRepository: SharedRepository
-): PagingSource<Int, Episode>() {
+): PagingSource<Int, EpisodeUiModel>() {
     // this function will invoke every time it needs to load a new page
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Episode> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EpisodeUiModel> {
         val pageNumber = params.key ?: 1
         val previousKey = if (pageNumber == 1) null else pageNumber - 1
 
@@ -19,14 +20,14 @@ class EpisodePagingSource(
 
         return LoadResult.Page(
             data = response?.results?.map {
-                transformEpisodeResponseToEpisode(it)
+                EpisodeUiModel.Item(transformEpisodeResponseToEpisode(it))
             } ?: emptyList(),
             prevKey = previousKey,
             nextKey = getPageIndexFromNext(response?.info?.next)
         )
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Episode>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, EpisodeUiModel>): Int? {
         // Try to find the page key of the closest page to anchorPosition, from
         // either the prevKey or the nextKey, but you need to handle nullability
         // here:

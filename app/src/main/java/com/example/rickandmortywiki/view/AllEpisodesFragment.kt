@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import com.example.rickandmortywiki.databinding.FragmentAllEpisodesBinding
 import com.example.rickandmortywiki.epoxy.uimodel.EpisodeListEpoxyController
+import com.example.rickandmortywiki.model.EpisodeUiModel
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,7 +37,7 @@ class AllEpisodesFragment : Fragment() {
 
         binding?.allEpisodeEpoxyRecyclerView?.setController(episodeListEpoxyController)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.flow.collectLatest { pagingData ->
+            viewModel.flow.collectLatest { pagingData: PagingData<EpisodeUiModel> ->
                 episodeListEpoxyController.submitData(pagingData)
             }
         }
