@@ -65,6 +65,14 @@ class SharedViewModel : ViewModel() {
         get() = _charactersDetail.asStateFlow()
 
 
+    private val _episode: MutableStateFlow<Episode?> = MutableStateFlow(Episode())
+    val episode: StateFlow<Episode?>
+        get() = _episode.asStateFlow()
+
+    fun fetchEpisode(episodeId: Int) = viewModelScope.launch {
+        _episode.value = apiRepository.getEpisodeById(episodeId)
+    }
+
     fun refreshCharacter(characterId: Int) = viewModelScope.launch {
         _charactersDetail.value = apiRepository.getCharacterById(characterId)
     }

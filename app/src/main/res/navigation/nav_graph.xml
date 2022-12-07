@@ -36,5 +36,21 @@
         android:id="@+id/allEpisodesFragment"
         android:name="com.example.rickandmortywiki.view.AllEpisodesFragment"
         android:label="All Episodes"
-        tools:layout="@layout/fragment_all_episodes" />
+        tools:layout="@layout/fragment_all_episodes" >
+        <action
+            android:id="@+id/action_allEpisodesFragment_to_episodeDetailBottomSheetFragment"
+            app:destination="@id/episodeDetailBottomSheetFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/episodeDetailBottomSheetFragment"
+        android:name="com.example.rickandmortywiki.view.EpisodeDetailBottomSheetFragment"
+        android:label="EpisodeDetailBottomSheetFragment"
+        tools:layout="@layout/fragment_episode_detail" >
+        <argument
+            android:name="episode_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </dialog>
+
 </navigation>

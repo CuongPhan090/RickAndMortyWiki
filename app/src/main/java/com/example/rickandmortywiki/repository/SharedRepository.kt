@@ -4,6 +4,7 @@ import com.example.rickandmortywiki.data.remote.NetworkCache
 import com.example.rickandmortywiki.data.remote.NetworkLayer
 import com.example.rickandmortywiki.model.DataTransformUtils
 import com.example.rickandmortywiki.model.domain.Characters
+import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdPagingSource
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdResponse
@@ -36,6 +37,20 @@ class SharedRepository {
         }
     }
 
+    suspend fun getEpisodeById(id: Int): Episode? {
+        val request = NetworkLayer.apiClient.getSingleEpisode(id)
+
+        if (!request.isSuccessful) {
+            return null
+        }
+
+        val characterList = getCharacterListFromEpisodeResponse(request.body)
+        return DataTransformUtils.transformEpisodeResponseToEpisode(
+            response = request.body,
+            character = characterList
+        )
+    }
+
     suspend fun getListOfCharacters(pageIndex: Int): GetListOfCharacter? {
         val request = NetworkLayer.apiClient.getListOfCharacters(pageIndex)
 
@@ -62,6 +77,20 @@ class SharedRepository {
         }.toString()
 
         val request = NetworkLayer.apiClient.getListOfEpisode(episodeRange)
+
+        if (request.failed || !request.isSuccessful) {
+            return null
+        }
+
+        return request.body
+    }
+
+    private suspend fun getCharacterListFromEpisodeResponse(episodeByIdResponse: EpisodeByIdResponse?): List<CharacterByIdResponse>? {
+        val characterList = episodeByIdResponse?.characters?.map {
+            it?.substring(startIndex = it.lastIndexOf("/") + 1)
+        }.toString()
+
+        val request = NetworkLayer.apiClient.getMultipleCharacter(characterList)
 
         if (request.failed || !request.isSuccessful) {
             return null

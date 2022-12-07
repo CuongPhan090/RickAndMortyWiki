@@ -9,8 +9,8 @@ object DataTransformUtils {
 
     fun transformCharacterResponseToCharacter(
         response: CharacterByIdResponse?,
-        episode: List<EpisodeByIdResponse>?
-    ): Characters? {
+        episode: List<EpisodeByIdResponse>? = null
+    ): Characters {
         return Characters(
             episode = episode?.map {
                 transformEpisodeResponseToEpisode(it)
@@ -26,13 +26,19 @@ object DataTransformUtils {
         )
     }
 
-    fun transformEpisodeResponseToEpisode(response: EpisodeByIdResponse?): Episode {
+    fun transformEpisodeResponseToEpisode(
+        response: EpisodeByIdResponse?,
+        character: List<CharacterByIdResponse>? = emptyList()
+    ): Episode {
         return Episode(
             id = response?.id,
             name = response?.name,
             airDate = response?.air_date,
             season = getSeasonFromEpisodeString(response?.episode),
-            episode = getEpisodeFromEpisodeString(response?.episode)
+            episode = getEpisodeFromEpisodeString(response?.episode),
+            characters = character?.map {
+                transformCharacterResponseToCharacter(it)
+            }
         )
     }
 
@@ -46,7 +52,7 @@ object DataTransformUtils {
         } ?: return 0
     }
 
-    private fun getEpisodeFromEpisodeString(episodeString : String?): Int {
+    private fun getEpisodeFromEpisodeString(episodeString: String?): Int {
         episodeString?.let { episode ->
             val episodeIndex = episode.indexOfFirst { it.equals('e', true) }
             if (episodeIndex == -1) {

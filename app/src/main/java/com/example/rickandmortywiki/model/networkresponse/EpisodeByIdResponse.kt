@@ -10,5 +10,5 @@ data class EpisodeByIdResponse(
     val episode: String? = null,
     val id: Int? = null,
     val name: String? = null,
-    val url: String? = null
+    val url: String? = null,
 )
