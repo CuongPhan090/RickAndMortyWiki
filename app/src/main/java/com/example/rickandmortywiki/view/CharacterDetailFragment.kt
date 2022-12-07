@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentCharacterDetailBinding
 import com.example.rickandmortywiki.epoxy.uimodel.CharacterDetailsEpoxyController
@@ -18,7 +19,7 @@ class CharacterDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentCharacterDetailBinding
     private val viewModel: SharedViewModel by viewModels()
-    private val epoxyController = CharacterDetailsEpoxyController()
+    private val epoxyController = CharacterDetailsEpoxyController(::onClickEpisode)
     val args: CharacterDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -39,5 +40,11 @@ class CharacterDetailFragment : Fragment() {
         viewModel.refreshCharacter(args.characterIndex)
 
         binding.epoxyRecyclerView.setControllerAndBuildModels(epoxyController)
+    }
+
+    private fun onClickEpisode(episodeId: Int?) {
+        episodeId?.let {
+            findNavController().navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToEpisodeDetailBottomSheetFragment(it))
+        }
     }
 }

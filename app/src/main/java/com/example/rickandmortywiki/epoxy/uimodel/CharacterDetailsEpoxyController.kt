@@ -11,7 +11,7 @@ import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
 import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.model.domain.Episode
 
-class CharacterDetailsEpoxyController : EpoxyController() {
+class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : EpoxyController() {
     // if data is being fetched, display progress bar
     var isLoading: Boolean = true
         set(value) {
@@ -55,9 +55,10 @@ class CharacterDetailsEpoxyController : EpoxyController() {
             image = charactersResponse?.image
         ).id("image").addTo(this)
 
+        // add episode carousel item
         if (charactersResponse?.episode?.isNotEmpty() == true) {
             val listOfEpisode = charactersResponse?.episode?.map {
-                EpisodeCarouselEpoxyModel(it).id(it.id)
+                EpisodeCarouselEpoxyModel(it,onClickEpisode).id(it.id)
             }
 
             EpisodeHeader(headerText = "Episodes").id("episode_header").addTo(this)
@@ -130,12 +131,16 @@ class CharacterDetailsEpoxyController : EpoxyController() {
     }
 
     data class EpisodeCarouselEpoxyModel(
-        val episode: Episode
+        val episode: Episode,
+        val onClick: (Int?) -> Unit
     ) : ViewBindingKotlinModel<ModelEpisodeCarouselItemsBinding>(R.layout.model_episode_carousel_items) {
         override fun ModelEpisodeCarouselItemsBinding.bind() {
             episodeSeason.text = episode.getFormattedSeasonTruncated()
             episodeName.text = episode.name
             episodeAirDay.text = episode.airDate
+            root.setOnClickListener {
+                onClick(episode.id)
+            }
         }
     }
 

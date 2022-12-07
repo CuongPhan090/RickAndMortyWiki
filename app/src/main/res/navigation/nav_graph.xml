@@ -17,6 +17,9 @@
         <deepLink
             android:id="@+id/deepLink"
             app:uri="rickandmorty://characters/details/{character_index}" />
+        <action
+            android:id="@+id/action_characterDetailFragment_to_episodeDetailBottomSheetFragment"
+            app:destination="@id/episodeDetailBottomSheetFragment" />
     </fragment>
 
     <fragment
