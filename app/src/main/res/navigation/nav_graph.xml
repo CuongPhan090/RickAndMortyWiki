@@ -55,5 +55,10 @@
             android:defaultValue="-1"
             app:argType="integer" />
     </dialog>
+    <fragment
+        android:id="@+id/characterSearchFragment"
+        android:name="com.example.rickandmortywiki.view.CharacterSearchFragment"
+        android:label="Character Search"
+        tools:layout="@layout/fragment_character_search" />
 
 </navigation>

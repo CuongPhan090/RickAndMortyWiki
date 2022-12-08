@@ -61,6 +61,16 @@ class SharedRepository {
         return request.body
     }
 
+    suspend fun searchCharacter(characterName: String?, pageIndex: Int?): GetListOfCharacter? {
+        val request = NetworkLayer.apiClient.searchCharacters(characterName, pageIndex)
+
+        if (request.failed || !request.isSuccessful) {
+            return null
+        }
+
+        return request.body
+    }
+
     suspend fun getEpisodeByPageId(pageIndex: Int): EpisodeByIdPagingSource? {
         val request = NetworkLayer.apiClient.getEpisodeByPageId(pageIndex)
 

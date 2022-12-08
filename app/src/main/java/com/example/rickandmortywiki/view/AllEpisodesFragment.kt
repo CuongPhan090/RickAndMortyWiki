@@ -38,7 +38,7 @@ class AllEpisodesFragment : Fragment() {
 
         binding?.allEpisodeEpoxyRecyclerView?.setController(episodeListEpoxyController)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.flow.collectLatest { pagingData: PagingData<EpisodeUiModel> ->
+            viewModel.allEpisodePagination.collectLatest { pagingData: PagingData<EpisodeUiModel> ->
                 episodeListEpoxyController.submitData(pagingData)
             }
         }

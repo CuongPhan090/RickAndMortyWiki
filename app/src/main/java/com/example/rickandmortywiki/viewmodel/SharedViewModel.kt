@@ -1,9 +1,11 @@
 package com.example.rickandmortywiki.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import com.example.rickandmortywiki.data.pagination.CharacterSearchPagingSource
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.data.pagination.CharactersDataSourceFactory
 import com.example.rickandmortywiki.data.pagination.EpisodePagingSource
@@ -11,6 +13,7 @@ import com.example.rickandmortywiki.model.EpisodeUiModel
 import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.repository.SharedRepository
+import com.example.rickandmortywiki.util.Event
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +26,7 @@ private const val PREFETCH_DISTANCE = PAGE_SIZE * 2 // page size x 2 or 3
 class SharedViewModel : ViewModel() {
     private val apiRepository = SharedRepository()
 
-    val flow = Pager(
+    val allEpisodePagination = Pager(
         PagingConfig(
             pageSize = PAGE_SIZE,
             prefetchDistance = PREFETCH_DISTANCE,
@@ -59,6 +62,33 @@ class SharedViewModel : ViewModel() {
         }
     }
 
+
+    private val _localExceptionEvent: MutableStateFlow<Event<CharacterSearchPagingSource.LocalException>> = MutableStateFlow(Event(CharacterSearchPagingSource.LocalException.EmptySearch))
+    val localExceptionEvent: StateFlow<Event<CharacterSearchPagingSource.LocalException>>
+        get() = _localExceptionEvent.asStateFlow()
+
+
+    private var currentUserSearch: String? = null
+    private var pagingSource: CharacterSearchPagingSource? = null
+        get() {
+            if (field == null || field?.invalid == true) {
+                field = CharacterSearchPagingSource(apiRepository, currentUserSearch) { localEvent ->
+                    _localExceptionEvent.value = Event(localEvent)
+                }
+            }
+            return field
+        }
+
+    val searchCharacterPagination = Pager(
+        PagingConfig(
+            pageSize = PAGE_SIZE,
+            prefetchDistance = PREFETCH_DISTANCE,
+            enablePlaceholders = false
+        )
+    ) {
+        pagingSource!!
+    }.flow.cachedIn(viewModelScope)
+
     private val _charactersDetail: MutableStateFlow<Characters?> =
         MutableStateFlow(Characters())
     val charactersDetail: StateFlow<Characters?>
@@ -79,6 +109,11 @@ class SharedViewModel : ViewModel() {
 
     fun getAllEpisode(pageNumber: Int): Any = viewModelScope.launch {
         apiRepository.getEpisodeByPageId(pageNumber)
+    }
+
+    fun submitQuery(keyword: String) {
+        currentUserSearch = keyword
+        pagingSource?.invalidate()
     }
 
     private val pageListConfig: PagedList.Config = PagedList.Config.Builder()
