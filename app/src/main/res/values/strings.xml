@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RickAndMortyWiki</string>
+    <string name="app_name">Rick And Morty Wiki</string>
     <string name="origin">Origin</string>
     <string name="species">Species</string>
     <!-- TODO: Remove or change this placeholder text -->
