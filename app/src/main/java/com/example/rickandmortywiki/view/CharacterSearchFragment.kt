@@ -18,7 +18,7 @@ import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class CharacterSearchFragment : Fragment() {
+class CharacterSearchFragment : BaseFragment("Search Character") {
 
     private var _binding: FragmentCharacterSearchBinding? = null
     private val binding

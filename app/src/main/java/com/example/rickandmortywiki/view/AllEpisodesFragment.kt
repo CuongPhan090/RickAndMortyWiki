@@ -16,7 +16,7 @@ import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AllEpisodesFragment : Fragment() {
+class AllEpisodesFragment : BaseFragment("All Episode") {
 
     private var _binding: FragmentAllEpisodesBinding? = null
     private val binding

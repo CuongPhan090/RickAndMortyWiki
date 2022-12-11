@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CharacterDetailFragment : Fragment() {
+class CharacterDetailFragment : BaseFragment("Character Detail") {
 
     private lateinit var binding: FragmentCharacterDetailBinding
     private val viewModel: SharedViewModel by viewModels()

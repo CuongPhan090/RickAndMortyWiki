@@ -11,7 +11,7 @@ import com.example.rickandmortywiki.databinding.FragmentListOfCharacterBinding
 import com.example.rickandmortywiki.epoxy.uimodel.CharacterListPagingEpoxyController
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
 
-class ListOfCharacterFragment : Fragment() {
+class ListOfCharacterFragment : BaseFragment("List of Character") {
     private lateinit var binding: FragmentListOfCharacterBinding
     private val characterListPagingEpoxyController = CharacterListPagingEpoxyController(::onCharacterClick)
     private val viewModel: SharedViewModel by viewModels()
