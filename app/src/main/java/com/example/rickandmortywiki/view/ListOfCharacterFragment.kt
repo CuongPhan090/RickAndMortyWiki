@@ -20,12 +20,14 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
     private val characterListPagingEpoxyController =
         CharacterListPagingEpoxyController(::onCharacterClick)
     private val viewModel: SharedViewModel by viewModels()
+    private lateinit var navView: NavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListOfCharacterBinding.inflate(layoutInflater)
+        navView = requireActivity().findViewById(R.id.nav_view)
         return binding.root
     }
 
@@ -41,7 +43,6 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
         val onBackPressed = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout)
-                val navView = requireActivity().findViewById<NavigationView>(R.id.nav_view)
                 if (drawerLayout.isDrawerOpen(navView)) {
                     drawerLayout.closeDrawer(GravityCompat.START)
                 } else {
@@ -51,6 +52,7 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressed)
+        navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = true
     }
 
     private fun onCharacterClick(index: Int) {
@@ -59,5 +61,10 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
                 index
             )
         findNavController().navigate(directions = direction)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = false
     }
 }

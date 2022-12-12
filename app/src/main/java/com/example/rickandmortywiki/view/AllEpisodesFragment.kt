@@ -9,10 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
+import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentAllEpisodesBinding
 import com.example.rickandmortywiki.epoxy.uimodel.EpisodeListEpoxyController
 import com.example.rickandmortywiki.model.EpisodeUiModel
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -24,12 +26,14 @@ class AllEpisodesFragment : BaseFragment("All Episode") {
 
     private val viewModel: SharedViewModel by viewModels()
     private val episodeListEpoxyController = EpisodeListEpoxyController(::onEpisodeClick)
+    private lateinit var navView: NavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAllEpisodesBinding.inflate(layoutInflater)
+        navView = requireActivity().findViewById(R.id.nav_view)
         return binding?.root
     }
 
@@ -42,10 +46,12 @@ class AllEpisodesFragment : BaseFragment("All Episode") {
                 episodeListEpoxyController.submitData(pagingData)
             }
         }
+        navView.menu.findItem(R.id.allEpisodesFragment).isChecked = true
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        navView.menu.findItem(R.id.allEpisodesFragment).isChecked = false
         _binding = null
     }
 

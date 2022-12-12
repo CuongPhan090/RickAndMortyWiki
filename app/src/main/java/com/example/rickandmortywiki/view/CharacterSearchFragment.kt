@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentCharacterSearchBinding
 import com.example.rickandmortywiki.epoxy.uimodel.CharacterSearchEpoxyController
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.flow.collectLatest
@@ -28,6 +30,7 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
     private val handler: Handler = Handler(Looper.getMainLooper())
     private val sharedViewModel: SharedViewModel by viewModels()
     private val epoxyController = CharacterSearchEpoxyController(::onCharacterClick)
+    private lateinit var navView: NavigationView
 
     private val runnable: Runnable = Runnable {
         sharedViewModel.submitQuery(currentText)
@@ -39,6 +42,7 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCharacterSearchBinding.inflate(inflater)
+        navView = requireActivity().findViewById(R.id.nav_view)
         return binding?.root
     }
 
@@ -72,6 +76,8 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
                 epoxyController.submitData(it)
             }
         }
+
+        navView.menu.findItem(R.id.characterSearchFragment).isChecked = true
     }
 
     private fun onCharacterClick(id: Int) {
@@ -80,6 +86,7 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        navView.menu.findItem(R.id.characterSearchFragment).isChecked = false
         _binding = null
     }
 }
