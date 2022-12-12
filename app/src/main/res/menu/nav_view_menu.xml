@@ -6,11 +6,13 @@
                 <item
                     android:id="@+id/listOfCharacterFragment"
                     android:icon="@drawable/ic_people"
+                    android:menuCategory="secondary"
                     android:title="@string/all_characters" />
 
                 <item
                     android:id="@id/characterSearchFragment"
                     android:icon="@drawable/ic_character_search"
+                    android:menuCategory="secondary"
                     android:title="@string/search_characters" />
             </group>
         </menu>
@@ -22,6 +24,7 @@
                 <item
                     android:id="@+id/allEpisodesFragment"
                     android:icon="@drawable/ic_video"
+                    android:menuCategory="secondary"
                     android:title="@string/all_episodes" />
             </group>
         </menu>

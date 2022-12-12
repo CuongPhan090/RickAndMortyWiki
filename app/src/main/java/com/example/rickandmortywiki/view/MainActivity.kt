@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         appBarConfig = AppBarConfiguration(
             topLevelDestinationIds = setOf(
                 R.id.listOfCharacterFragment,
-                R.id.allEpisodesFragment
+                R.id.allEpisodesFragment,
+                R.id.characterSearchFragment
             ),
             drawerLayout = binding.drawerLayout
         )

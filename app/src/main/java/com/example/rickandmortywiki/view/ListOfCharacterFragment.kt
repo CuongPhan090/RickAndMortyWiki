@@ -4,16 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentListOfCharacterBinding
 import com.example.rickandmortywiki.epoxy.uimodel.CharacterListPagingEpoxyController
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
+import com.google.android.material.navigation.NavigationView
 
 class ListOfCharacterFragment : BaseFragment("List of Character") {
     private lateinit var binding: FragmentListOfCharacterBinding
-    private val characterListPagingEpoxyController = CharacterListPagingEpoxyController(::onCharacterClick)
+    private val characterListPagingEpoxyController =
+        CharacterListPagingEpoxyController(::onCharacterClick)
     private val viewModel: SharedViewModel by viewModels()
 
     override fun onCreateView(
@@ -32,10 +37,27 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
         viewModel.listOfCharacters.observe(viewLifecycleOwner) { pagedList ->
             characterListPagingEpoxyController.submitList(pagedList)
         }
+
+        val onBackPressed = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout)
+                val navView = requireActivity().findViewById<NavigationView>(R.id.nav_view)
+                if (drawerLayout.isDrawerOpen(navView)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    requireActivity().finish()
+                }
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressed)
     }
 
     private fun onCharacterClick(index: Int) {
-        val direction = ListOfCharacterFragmentDirections.actionListOfCharacterFragmentToCharacterDetailFragment(index)
+        val direction =
+            ListOfCharacterFragmentDirections.actionListOfCharacterFragmentToCharacterDetailFragment(
+                index
+            )
         findNavController().navigate(directions = direction)
     }
 }
