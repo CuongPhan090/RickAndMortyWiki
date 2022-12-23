@@ -7,25 +7,15 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/header"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="12dp"
         android:layout_marginStart="16dp"
+        android:background="#DDDDDD"
         android:textAppearance="?attr/textAppearanceHeadline5"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Episode" />
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/model_header_shimmer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:shimmer_repeat_mode="restart"
-        app:shimmer_shape="linear">
-
-        <include layout="@layout/model_header_skeleton" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

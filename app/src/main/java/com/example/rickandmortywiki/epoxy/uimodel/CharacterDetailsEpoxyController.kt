@@ -1,7 +1,9 @@
 package com.example.rickandmortywiki.epoxy.uimodel
 
 import android.graphics.BitmapFactory
-import android.util.Log
+import android.os.Build
+import android.view.View
+import androidx.annotation.RequiresApi
 import coil.load
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
@@ -33,11 +35,6 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
 
     // called when UI update requested
     override fun buildModels() {
-        if (isLoading) {
-            LoadingEpoxyModel().id("loading").addTo(this)
-            return
-        }
-
         if (charactersResponse == null) {
             // TODO: Handle error
             return
@@ -56,20 +53,36 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
         ).id("image").addTo(this)
 
         // add episode carousel item
-        if (charactersResponse?.episode?.isNotEmpty() == true) {
-            val listOfEpisode = charactersResponse?.episode?.map {
-                EpisodeCarouselEpoxyModel(it,onClickEpisode).id(it.id)
-            }
+        charactersResponse?.episode?.let { episodes ->
+            if (episodes.isNotEmpty()) {
+                val listOfEpisode = charactersResponse?.episode?.map {
+                    EpisodeCarouselEpoxyModel(it, onClickEpisode).id(it.id)
+                }
 
-            EpisodeHeader(headerText = "Episodes").id("episode_header").addTo(this)
+                EpisodeHeader(headerText = "Episodes").id("episode_header").addTo(this)
 
-            listOfEpisode?.let {
-                CarouselModel_()
-                    .id("episode_carousel")
-                    .models(it)
-                    .numViewsToShowOnScreen(1.25f)
-                    .addTo(this)
+                listOfEpisode?.let {
+                    CarouselModel_()
+                        .id("episode_carousel")
+                        .models(it)
+                        .numViewsToShowOnScreen(1.25f)
+                        .addTo(this)
+                }
             }
+        } ?: run {
+            // add data points model
+            EpisodeHeader(headerText = null).id("episodes").addTo(this)
+
+            CarouselModel_()
+                .id("episode_carousel")
+                .models(
+                    listOf(
+                        EpisodeCarouselEpoxyModel(null, onClickEpisode).id("episode_carousel_1"),
+                        EpisodeCarouselEpoxyModel(null, onClickEpisode).id("episode_carousel_2")
+                    )
+                )
+                .numViewsToShowOnScreen(1.25f)
+                .addTo(this)
         }
 
         // add data points model
@@ -82,8 +95,6 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
             title = "Specie",
             description = charactersResponse?.species
         ).id("specie").addTo(this)
-
-
     }
 
     data class HeaderEpoxyModel(
@@ -92,6 +103,12 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
         val status: String?
     ) : ViewBindingKotlinModel<ModelCharacterDetailsHeaderBinding>(R.layout.model_character_details_header) {
         override fun ModelCharacterDetailsHeaderBinding.bind() {
+            if (name == null && gender == null && status == null) {
+                showShimmerHeader(true, this)
+                return
+            }
+
+            showShimmerHeader(false, this)
             characterName.text = name
             characterStatus.text = status
             if (gender?.lowercase() == "male") {
@@ -110,13 +127,55 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
                 )
             }
         }
+
+        private fun showShimmerHeader(show: Boolean, binding: ModelCharacterDetailsHeaderBinding) {
+            if (show) {
+                binding.apply {
+                    modelCharacterDetailsHeaderShimmer.startShimmer()
+                    modelCharacterDetailsHeaderShimmer.visibility = View.VISIBLE
+                    characterName.visibility = View.GONE
+                    characterStatus.visibility = View.GONE
+                    characterGender.visibility = View.GONE
+                }
+            } else {
+                binding.apply {
+                    modelCharacterDetailsHeaderShimmer.stopShimmer()
+                    modelCharacterDetailsHeaderShimmer.visibility = View.GONE
+                    characterName.visibility = View.VISIBLE
+                    characterStatus.visibility = View.VISIBLE
+                    characterGender.visibility = View.VISIBLE
+                }
+            }
+        }
     }
+
 
     data class ImageEpoxyModel(
         val image: String?
     ) : ViewBindingKotlinModel<ModelCharacterDetailsImageBinding>(R.layout.model_character_details_image) {
         override fun ModelCharacterDetailsImageBinding.bind() {
+            if (image == null) {
+                showShimmerImage(true, this)
+                return
+            }
             characterImage.load(image)
+            showShimmerImage(false, this)
+        }
+
+        private fun showShimmerImage(show: Boolean, binding: ModelCharacterDetailsImageBinding) {
+            if (show) {
+                binding.apply {
+                    modelCharacterDetailsImageShimmer.startShimmer()
+                    modelCharacterDetailsImageShimmer.visibility = View.VISIBLE
+                    characterImage.visibility = View.GONE
+                }
+            } else {
+                binding.apply {
+                    modelCharacterDetailsImageShimmer.stopShimmer()
+                    modelCharacterDetailsImageShimmer.visibility = View.GONE
+                    characterImage.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
@@ -125,29 +184,110 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
         val description: String?
     ) : ViewBindingKotlinModel<ModelCharacterDetailsDataPointBinding>(R.layout.model_character_details_data_point) {
         override fun ModelCharacterDetailsDataPointBinding.bind() {
+            if (description == null) {
+                showShimmerDataPoints(true, this)
+                return
+            }
+            showShimmerDataPoints(false, this)
             label.text = title
             context.text = description
         }
-    }
 
-    data class EpisodeCarouselEpoxyModel(
-        val episode: Episode,
-        val onClick: (Int?) -> Unit
-    ) : ViewBindingKotlinModel<ModelEpisodeCarouselItemsBinding>(R.layout.model_episode_carousel_items) {
-        override fun ModelEpisodeCarouselItemsBinding.bind() {
-            episodeSeason.text = episode.getFormattedSeasonTruncated()
-            episodeName.text = episode.name
-            episodeAirDay.text = episode.airDate
-            root.setOnClickListener {
-                onClick(episode.id)
+        private fun showShimmerDataPoints(
+            show: Boolean,
+            binding: ModelCharacterDetailsDataPointBinding
+        ) {
+            if (show) {
+                binding.apply {
+                    modelCharacterDetailsDataPointShimmer.startShimmer()
+                    modelCharacterDetailsDataPointShimmer.visibility = View.VISIBLE
+                    label.visibility = View.GONE
+                    context.visibility = View.GONE
+                }
+            } else {
+                binding.apply {
+                    modelCharacterDetailsDataPointShimmer.stopShimmer()
+                    modelCharacterDetailsDataPointShimmer.visibility = View.GONE
+                    label.visibility = View.VISIBLE
+                    context.visibility = View.VISIBLE
+                }
             }
         }
     }
 
-    data class EpisodeHeader(val headerText: String) :
+    data class EpisodeCarouselEpoxyModel(
+        val episode: Episode?,
+        val onClick: (Int?) -> Unit
+    ) : ViewBindingKotlinModel<ModelEpisodeCarouselItemsBinding>(R.layout.model_episode_carousel_items) {
+        @RequiresApi(Build.VERSION_CODES.M)
+        override fun ModelEpisodeCarouselItemsBinding.bind() {
+            episode?.let { episodeDetails ->
+                showShimmerEpisodeCarousel(false, this)
+                episodeName.text = episodeDetails.name
+                episodeAirDay.text = episodeDetails.airDate
+                episodeSeason.text = episodeDetails.getFormattedSeasonTruncated()
+                root.setOnClickListener {
+                    onClick(episodeDetails.id)
+                }
+            } ?: run {
+                showShimmerEpisodeCarousel(true, this)
+            }
+        }
+
+        @RequiresApi(Build.VERSION_CODES.M)
+        private fun showShimmerEpisodeCarousel(
+            show: Boolean,
+            binding: ModelEpisodeCarouselItemsBinding
+        ) {
+            if (show) {
+                binding.apply {
+                    modelEpisodeCarouselItemsShimmer.startShimmer()
+                    modelEpisodeCarouselItemsShimmer.visibility = View.VISIBLE
+                    episodeName.visibility = View.GONE
+                    episodeAirDay.visibility = View.GONE
+                    episodeSeason.visibility = View.GONE
+                    binding.root.strokeColor =
+                        root.resources.getColor(R.color.shimmer_view_background, root.context.theme)
+                }
+            } else {
+                binding.apply {
+                    modelEpisodeCarouselItemsShimmer.stopShimmer()
+                    modelEpisodeCarouselItemsShimmer.visibility = View.GONE
+                    episodeName.visibility = View.VISIBLE
+                    episodeAirDay.visibility = View.VISIBLE
+                    episodeSeason.visibility = View.VISIBLE
+                    binding.root.strokeColor =
+                        root.resources.getColor(R.color.black, root.context.theme)
+                }
+            }
+        }
+    }
+
+    data class EpisodeHeader(val headerText: String?) :
         ViewBindingKotlinModel<ModelHeaderBinding>(R.layout.model_header) {
         override fun ModelHeaderBinding.bind() {
+            if (headerText == null) {
+                showShimmerHeader(true, this)
+                return
+            }
+            showShimmerHeader(false, this)
             header.text = headerText
+        }
+
+        private fun showShimmerHeader(show: Boolean, binding: ModelHeaderBinding) {
+            if (show) {
+                binding.apply {
+                    modelHeaderShimmer.startShimmer()
+                    modelHeaderShimmer.visibility = View.VISIBLE
+                    header.visibility = View.GONE
+                }
+            } else {
+                binding.apply {
+                    modelHeaderShimmer.stopShimmer()
+                    modelHeaderShimmer.visibility = View.GONE
+                    header.visibility = View.VISIBLE
+                }
+            }
         }
     }
 }

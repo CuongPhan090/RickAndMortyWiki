@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/model_character_details_header_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/character_name"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
+        android:background="#DDDDDD"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Morty Smith" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/character_status"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:textStyle="italic"
+        android:background="#DDDDDD"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/character_name"
-        tools:text="Alive" />
+        app:layout_constraintTop_toBottomOf="@id/character_name" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/character_gender"
@@ -34,20 +32,7 @@
         android:layout_height="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:importantForAccessibility="no"
+        android:background="#DDDDDD"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="?colorOnSurface"
-        tools:src="@drawable/male_symbol" />
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/model_character_details_header_shimmer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:shimmer_repeat_mode="restart"
-        app:shimmer_shape="linear">
-
-        <include layout="@layout/model_character_details_header_skeleton" />
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,25 +9,12 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.SimpleMorty"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        app:strokeColor="?colorOnSurface"
         app:strokeWidth="1dp"
         android:layout_marginTop="16dp"
-        android:importantForAccessibility="no"
-        android:scaleType="centerCrop"
         android:padding="1dp"
+        android:background="#DDDDDD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/backgrounds/scenic[7]" />
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        app:shimmer_shape="linear"
-        android:id="@+id/model_character_details_image_shimmer"
-        app:shimmer_repeat_mode="restart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/model_character_details_image_skeleton"/>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,15 @@
 package com.example.rickandmortywiki.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentCharacterDetailBinding
@@ -32,9 +36,11 @@ class CharacterDetailFragment : BaseFragment("Character Detail") {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.charactersDetail.collect { character ->
-                epoxyController.charactersResponse = character
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.charactersDetail.collect { character ->
+                    epoxyController.charactersResponse = character
+                }
             }
         }
         viewModel.refreshCharacter(args.characterIndex)

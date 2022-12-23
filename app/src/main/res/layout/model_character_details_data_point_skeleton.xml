@@ -1,41 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/label"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        android:textColor="?colorOnSurface"
-        android:textStyle="italic|bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/origin" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/context"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:textColor="?colorOnSurface"
+        android:layout_marginStart="16dp"
+        android:background="#DDDDDD"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label"
-        tools:text="Earth" />
+        app:layout_constraintTop_toBottomOf="@id/label" />
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/model_character_details_data_point_shimmer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:shimmer_repeat_mode="restart"
-        app:shimmer_shape="linear">
-
-        <include layout="@layout/model_character_details_data_point_skeleton" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

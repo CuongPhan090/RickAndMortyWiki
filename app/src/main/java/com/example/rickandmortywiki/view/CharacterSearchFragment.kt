@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentCharacterSearchBinding
 import com.example.rickandmortywiki.epoxy.uimodel.CharacterSearchEpoxyController
@@ -63,21 +65,25 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
         binding?.searchEpoxyController?.setControllerAndBuildModels(epoxyController)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedViewModel.localExceptionEvent.collectLatest { event ->
-                event.getContent()?.let {
-                    epoxyController.localException = it
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sharedViewModel.localExceptionEvent.collectLatest { event ->
+                    event.getContent()?.let {
+                        epoxyController.localException = it
+                    }
                 }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedViewModel.searchCharacterPagination.collect {
-                epoxyController.localException = null
-                epoxyController.submitData(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sharedViewModel.searchCharacterPagination.collect {
+                    epoxyController.localException = null
+                    epoxyController.submitData(it)
+                }
             }
-        }
 
-        navView.menu.findItem(R.id.characterSearchFragment).isChecked = true
+            navView.menu.findItem(R.id.characterSearchFragment).isChecked = true
+        }
     }
 
     private fun onCharacterClick(id: Int) {

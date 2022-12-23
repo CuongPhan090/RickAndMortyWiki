@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import com.example.rickandmortywiki.R
@@ -42,8 +44,10 @@ class AllEpisodesFragment : BaseFragment("All Episode") {
 
         binding?.allEpisodeEpoxyRecyclerView?.setController(episodeListEpoxyController)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.allEpisodePagination.collectLatest { pagingData: PagingData<EpisodeUiModel> ->
-                episodeListEpoxyController.submitData(pagingData)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.allEpisodePagination.collectLatest { pagingData: PagingData<EpisodeUiModel> ->
+                    episodeListEpoxyController.submitData(pagingData)
+                }
             }
         }
         navView.menu.findItem(R.id.allEpisodesFragment).isChecked = true

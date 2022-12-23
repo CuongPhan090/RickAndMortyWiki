@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentEpisodeDetailBinding
 import com.example.rickandmortywiki.epoxy.uimodel.EpisodeDetailsEpoxyController
@@ -14,7 +16,7 @@ import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 
-class EpisodeDetailBottomSheetFragment: BottomSheetDialogFragment() {
+class EpisodeDetailBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentEpisodeDetailBinding? = null
     private val binding: FragmentEpisodeDetailBinding?
@@ -37,8 +39,10 @@ class EpisodeDetailBottomSheetFragment: BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.episode.collect {
-                bindData(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.episode.collect {
+                    bindData(it)
+                }
             }
         }
         viewModel.fetchEpisode(navArgs.episodeId)
