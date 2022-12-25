@@ -2,9 +2,11 @@ package com.example.rickandmortywiki.epoxy.uimodel
 
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import coil.load
+import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.example.rickandmortywiki.R
@@ -12,6 +14,7 @@ import com.example.rickandmortywiki.databinding.*
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
 import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.model.domain.Episode
+import com.example.rickandmortywiki.util.NumberUtils.toPx
 
 class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : EpoxyController() {
     // if data is being fetched, display progress bar
@@ -65,6 +68,7 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
                     CarouselModel_()
                         .id("episode_carousel")
                         .models(it)
+                        .padding(Carousel.Padding(8.toPx, 0, 8.toPx, 0, 0))
                         .numViewsToShowOnScreen(1.25f)
                         .addTo(this)
                 }
@@ -81,6 +85,7 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
                         EpisodeCarouselEpoxyModel(null, onClickEpisode).id("episode_carousel_2")
                     )
                 )
+                .padding(Carousel.Padding(8.toPx, 0, 8.toPx, 0, 0))
                 .numViewsToShowOnScreen(1.25f)
                 .addTo(this)
         }
