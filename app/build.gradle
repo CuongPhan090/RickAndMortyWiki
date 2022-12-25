@@ -6,6 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id "com.apollographql.apollo3" version "3.7.3"
 }
 
 //Epoxy
@@ -44,6 +45,10 @@ android {
         viewBinding true
     }
     buildToolsVersion '30.0.3'
+
+    apollo {
+        packageName.set("com.example.rickandmortywiki")
+    }
 }
 
 dependencies {
@@ -109,4 +114,8 @@ dependencies {
 
     // facebook
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // Apollo Graphql
+    implementation 'com.apollographql.apollo3:apollo-runtime:3.7.3'
+
 }
