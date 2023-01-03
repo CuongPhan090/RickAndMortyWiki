@@ -1,10 +1,8 @@
-package com.example.rickandmortywiki.data.remote.apiclient
+package com.example.rickandmortywiki.data.remote
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Operation
-import com.example.rickandmortywiki.data.remote.ApolloSimpleResponse
-import com.example.rickandmortywiki.data.remote.RickAndMortyApolloService
 import com.example.rickandmortywiki.type.FilterCharacter
 
 class ApolloApiClient(

@@ -3,7 +3,6 @@ package com.example.rickandmortywiki.view
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentCharacterSearchBinding
 import com.example.rickandmortywiki.epoxy.uimodel.CharacterSearchEpoxyController
@@ -87,7 +87,7 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
     }
 
     private fun onCharacterClick(id: Int) {
-
+        findNavController().navigate(CharacterSearchFragmentDirections.actionCharacterSearchFragmentToCharacterDetailFragment(id))
     }
 
     override fun onDestroyView() {

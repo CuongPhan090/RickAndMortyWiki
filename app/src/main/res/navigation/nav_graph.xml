@@ -11,7 +11,7 @@
         android:label="Character Details"
         tools:layout="@layout/fragment_character_detail">
         <argument
-            android:name="character_index"
+            android:name="character_id"
             android:defaultValue="-1"
             app:argType="integer" />
         <deepLink
@@ -54,11 +54,18 @@
             android:name="episode_id"
             android:defaultValue="-1"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_episodeDetailBottomSheetFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
     </dialog>
     <fragment
         android:id="@+id/characterSearchFragment"
         android:name="com.example.rickandmortywiki.view.CharacterSearchFragment"
         android:label="Character Search"
-        tools:layout="@layout/fragment_character_search" />
+        tools:layout="@layout/fragment_character_search" >
+        <action
+            android:id="@+id/action_characterSearchFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+    </fragment>
 
 </navigation>

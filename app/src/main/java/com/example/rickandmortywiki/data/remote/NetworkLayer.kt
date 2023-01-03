@@ -2,7 +2,6 @@ package com.example.rickandmortywiki.data.remote
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
-import com.example.rickandmortywiki.data.remote.apiclient.ApolloApiClient
 import okhttp3.OkHttpClient
 
 object NetworkLayer {

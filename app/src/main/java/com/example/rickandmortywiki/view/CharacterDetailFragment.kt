@@ -43,7 +43,7 @@ class CharacterDetailFragment : BaseFragment("Character Detail") {
                 }
             }
         }
-        viewModel.getCharacter(args.characterIndex.toString())
+        viewModel.getCharacter(args.characterId.toString())
 
         binding?.epoxyRecyclerView?.setControllerAndBuildModels(epoxyController)
     }
