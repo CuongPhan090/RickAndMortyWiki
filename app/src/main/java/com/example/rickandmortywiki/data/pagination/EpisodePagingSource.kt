@@ -2,7 +2,10 @@ package com.example.rickandmortywiki.data.pagination
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.rickandmortywiki.model.DataTransformUtils.transformEpisodeResponseToEpisode
 import com.example.rickandmortywiki.model.EpisodeUiModel
+import com.example.rickandmortywiki.model.domain.Episode
+import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdPagingSource
 import com.example.rickandmortywiki.repository.SharedRepository
 
 class EpisodePagingSource(
@@ -11,19 +14,16 @@ class EpisodePagingSource(
     // this function will invoke every time it needs to load a new page
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EpisodeUiModel> {
         val pageNumber = params.key ?: 1
+        val previousKey = if (pageNumber == 1) null else pageNumber - 1
 
-        val response = apiRepository.getEpisodes(pageNumber)
-
-        val x =  response?.episode?.map {
-            EpisodeUiModel.Item(
-                episode = it
-            )
-        }
+        val response = apiRepository.getEpisodeByPageId(pageNumber)
 
         return LoadResult.Page(
-            data = x ?: emptyList(),
-            prevKey = response?.info?.prev,
-            nextKey = response?.info?.next
+            data = response?.results?.map {
+                EpisodeUiModel.Item(transformEpisodeResponseToEpisode(it))
+            } ?: emptyList(),
+            prevKey = previousKey,
+            nextKey = getPageIndexFromNext(response?.info?.next)
         )
     }
 
@@ -39,5 +39,9 @@ class EpisodePagingSource(
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
+    }
+
+    private fun getPageIndexFromNext(next: String?): Int? {
+        return next?.split("?page=")?.get(1)?.toInt()
     }
 }

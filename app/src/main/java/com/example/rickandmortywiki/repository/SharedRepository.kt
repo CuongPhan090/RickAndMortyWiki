@@ -1,62 +1,111 @@
 package com.example.rickandmortywiki.repository
 
+import com.example.rickandmortywiki.data.remote.NetworkCache
 import com.example.rickandmortywiki.data.remote.NetworkLayer
 import com.example.rickandmortywiki.model.DataTransformUtils
-import com.example.rickandmortywiki.model.domain.Character
-import com.example.rickandmortywiki.model.domain.CharacterPagination
+import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.model.domain.Episode
-import com.example.rickandmortywiki.model.domain.EpisodePagination
+import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdPagingSource
+import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
+import com.example.rickandmortywiki.model.networkresponse.EpisodeByIdResponse
 import com.example.rickandmortywiki.model.networkresponse.GetListOfCharacter
-import com.example.rickandmortywiki.type.FilterCharacter
 
 class SharedRepository {
+    suspend fun getCharacterById(characterId: Int): Characters? {
+        val cachedCharacter = NetworkCache.characterResponseMap
+        cachedCharacter[characterId]?.let {
+            return it
+        } ?: run {
+            val request = NetworkLayer.apiClient.getCharacterById(characterId)
+            // User device network issue
+            if (request.failed) {
+                return null
+            }
 
-    suspend fun getCharacter(id: String): Character {
-        val request = NetworkLayer.apolloApiClient.getCharacter(id)
-        return DataTransformUtils.transformCharacterResponse1ToCharacter(
-            response = request.body?.character,
-            episode =  request.body?.character?.episode
+            // Api issue
+            if (!request.isSuccessful)
+                return null
+
+            val characterResponseBody = request.body
+            val episodeResponseBody = parseEpisodeFromCharacterResponse(characterResponseBody)
+            val character = DataTransformUtils.transformCharacterResponseToCharacter(
+                response = characterResponseBody,
+                episode = episodeResponseBody
+            )
+            cachedCharacter[characterId] = character
+            return character
+        }
+    }
+
+    suspend fun getEpisodeById(id: Int): Episode? {
+        val request = NetworkLayer.apiClient.getSingleEpisode(id)
+
+        if (!request.isSuccessful) {
+            return null
+        }
+
+        val characterList = getCharacterListFromEpisodeResponse(request.body)
+        return DataTransformUtils.transformEpisodeResponseToEpisode(
+            response = request.body,
+            character = characterList
         )
     }
 
-    suspend fun getCharacters(pageIndex: Int): GetListOfCharacter? {
-        val request = NetworkLayer.apolloApiClient.getCharacters(pageIndex)
-        return DataTransformUtils.transformCharactersQueryToListOfCharacter(request.body?.characters?.info, request.body?.characters?.results)
-    }
-
-    suspend fun getEpisode(id: String): Episode? {
-        val request = NetworkLayer.apolloApiClient.getEpisode(id)
+    suspend fun getListOfCharacters(pageIndex: Int): GetListOfCharacter? {
+        val request = NetworkLayer.apiClient.getListOfCharacters(pageIndex)
 
         if (request.failed || !request.isSuccessful) {
             return null
         }
 
-        return DataTransformUtils.transformEpisodeResponse2ToEpisode(
-            response = request.body?.episode,
-            character = request.body?.episode?.characters
-        )
+        return request.body
     }
 
-    suspend fun searchCharacter(pageIndex: Int, filter: FilterCharacter): CharacterPagination? {
-        val request = NetworkLayer.apolloApiClient.searchCharacters(pageIndex, filter)
+    suspend fun searchCharacter(characterName: String?, pageIndex: Int?): GetListOfCharacter? {
+        val request = NetworkLayer.apiClient.searchCharacters(characterName, pageIndex)
 
         if (request.failed || !request.isSuccessful) {
             return null
         }
 
-        return DataTransformUtils.transformCharacterFilterResponseToCharacters(
-            request.body?.characters?.info,
-            request.body?.characters?.results
-        )
+        return request.body
     }
 
-    suspend fun getEpisodes(pageIndex: Int): EpisodePagination? {
-        val request = NetworkLayer.apolloApiClient.getEpisodes(pageIndex)
+    suspend fun getEpisodeByPageId(pageIndex: Int): EpisodeByIdPagingSource? {
+        val request = NetworkLayer.apiClient.getEpisodeByPageId(pageIndex)
+
+        if (!request.isSuccessful) {
+            return null
+        }
+
+        return request.body
+    }
+
+    private suspend fun parseEpisodeFromCharacterResponse(characterResponse: CharacterByIdResponse?): List<EpisodeByIdResponse>? {
+        val episodeRange = characterResponse?.episode?.map { episode ->
+            episode.substring(episode.lastIndexOf("/") + 1)
+        }.toString()
+
+        val request = NetworkLayer.apiClient.getListOfEpisode(episodeRange)
 
         if (request.failed || !request.isSuccessful) {
             return null
         }
 
-        return DataTransformUtils.transformEpisodeResponseToEpisodePaging(request.body?.episodes)
+        return request.body
+    }
+
+    private suspend fun getCharacterListFromEpisodeResponse(episodeByIdResponse: EpisodeByIdResponse?): List<CharacterByIdResponse>? {
+        val characterList = episodeByIdResponse?.characters?.map {
+            it?.substring(startIndex = it.lastIndexOf("/") + 1)
+        }.toString()
+
+        val request = NetworkLayer.apiClient.getMultipleCharacter(characterList)
+
+        if (request.failed || !request.isSuccessful) {
+            return null
+        }
+
+        return request.body
     }
 }
