@@ -1,16 +1,16 @@
 package com.example.rickandmortywiki.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
-import androidx.paging.insertSeparators
+import androidx.paging.*
 import com.example.rickandmortywiki.data.pagination.CharacterSearchPagingSource
-import com.example.rickandmortywiki.data.pagination.CharactersPagingSource
+import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
+import com.example.rickandmortywiki.data.pagination.CharactersDataSourceFactory
 import com.example.rickandmortywiki.data.pagination.EpisodePagingSource
 import com.example.rickandmortywiki.model.EpisodeUiModel
-import com.example.rickandmortywiki.model.domain.Character
+import com.example.rickandmortywiki.model.domain.Characters
 import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.repository.SharedRepository
 import com.example.rickandmortywiki.util.Event
@@ -89,37 +89,45 @@ class SharedViewModel : ViewModel() {
         pagingSource!!
     }.flow.cachedIn(viewModelScope)
 
-
-    val charactersPagination = Pager(
-        PagingConfig(
-            pageSize = PAGE_SIZE,
-            prefetchDistance = PREFETCH_DISTANCE,
-            enablePlaceholders = false
-        )
-    ) {
-        CharactersPagingSource(apiRepository)
-    }.flow.cachedIn(viewModelScope)
+    private val _charactersDetail: MutableStateFlow<Characters?> =
+        MutableStateFlow(Characters())
+    val charactersDetail: StateFlow<Characters?>
+        get() = _charactersDetail.asStateFlow()
 
 
     private val _episode: MutableStateFlow<Episode?> = MutableStateFlow(Episode())
     val episode: StateFlow<Episode?>
         get() = _episode.asStateFlow()
 
-    fun fetchEpisode(episodeId: String) = viewModelScope.launch {
-        _episode.value = apiRepository.getEpisode(episodeId)
+    fun fetchEpisode(episodeId: Int) = viewModelScope.launch {
+        _episode.value = apiRepository.getEpisodeById(episodeId)
     }
 
-    private val _characterDetail: MutableStateFlow<Character?> =
-        MutableStateFlow(Character())
-    val characterDetail: StateFlow<Character?>
-        get() = _characterDetail.asStateFlow()
+    fun refreshCharacter(characterId: Int) = viewModelScope.launch {
+        _charactersDetail.value = apiRepository.getCharacterById(characterId)
+    }
 
-    fun getCharacter(characterId: String) = viewModelScope.launch {
-        _characterDetail.value = apiRepository.getCharacter(characterId)
+    fun getAllEpisode(pageNumber: Int): Any = viewModelScope.launch {
+        apiRepository.getEpisodeByPageId(pageNumber)
     }
 
     fun submitQuery(keyword: String) {
         currentUserSearch = keyword
         pagingSource?.invalidate()
     }
+
+    private val pageListConfig: PagedList.Config = PagedList.Config.Builder()
+        .setPageSize(PAGE_SIZE)
+        .setPrefetchDistance(PREFETCH_DISTANCE)
+        .build()
+
+    private val dataSourceFactory = CharactersDataSourceFactory(
+        coroutineScope = viewModelScope,
+        repository = apiRepository
+    )
+
+    val listOfCharacters: LiveData<PagedList<CharacterByIdResponse>> = LivePagedListBuilder(
+        dataSourceFactory,
+        pageListConfig
+    ).build()
 }
