@@ -1,7 +1,7 @@
 package com.example.rickandmortywiki.data.remote
 
-import com.example.rickandmortywiki.model.domain.Characters
+import com.example.rickandmortywiki.model.domain.Character
 
 object NetworkCache {
-    val characterResponseMap = mutableMapOf<Int, Characters?>()
+    val characterResponseMap = mutableMapOf<Int, Character?>()
 }

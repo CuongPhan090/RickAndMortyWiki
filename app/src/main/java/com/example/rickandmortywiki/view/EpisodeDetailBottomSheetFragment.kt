@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentEpisodeDetailBinding
 import com.example.rickandmortywiki.epoxy.uimodel.EpisodeDetailsEpoxyController
@@ -45,7 +46,7 @@ class EpisodeDetailBottomSheetFragment : BottomSheetDialogFragment() {
                 }
             }
         }
-        viewModel.fetchEpisode(navArgs.episodeId)
+        viewModel.fetchEpisode(navArgs.episodeId.toString())
     }
 
     private fun bindData(episode: Episode?) {
@@ -54,7 +55,9 @@ class EpisodeDetailBottomSheetFragment : BottomSheetDialogFragment() {
             it.episodeAirDay.text = episode?.airDate
             it.seasonEpisodeNumber.text = episode?.getFormattedSeason()
             it.charactersCarousel.setControllerAndBuildModels(
-                EpisodeDetailsEpoxyController(episode?.characters)
+                EpisodeDetailsEpoxyController(episode?.characters) { id ->
+                    findNavController().navigate(EpisodeDetailBottomSheetFragmentDirections.actionEpisodeDetailBottomSheetFragmentToCharacterDetailFragment(id ?: -1))
+                }
             )
         }
     }

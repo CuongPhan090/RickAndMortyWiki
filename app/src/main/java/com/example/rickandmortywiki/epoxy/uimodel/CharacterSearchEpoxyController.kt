@@ -8,13 +8,13 @@ import com.example.rickandmortywiki.data.pagination.CharacterSearchPagingSource
 import com.example.rickandmortywiki.databinding.ModelCharacterListBinding
 import com.example.rickandmortywiki.databinding.ModelLocalExceptionErrorStateBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
-import com.example.rickandmortywiki.model.domain.Characters
+import com.example.rickandmortywiki.model.domain.Character
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 
 @ObsoleteCoroutinesApi
 class CharacterSearchEpoxyController(
     private val onCharacterClick: (Int) -> Unit,
-) : PagingDataEpoxyController<Characters>() {
+) : PagingDataEpoxyController<Character>() {
 
     var localException: CharacterSearchPagingSource.LocalException? = null
         set(value) {
@@ -24,7 +24,7 @@ class CharacterSearchEpoxyController(
             }
         }
 
-    override fun buildItemModel(currentPosition: Int, item: Characters?): EpoxyModel<*> {
+    override fun buildItemModel(currentPosition: Int, item: Character?): EpoxyModel<*> {
         return CharacterGridItemEpoxyModel(
             item, onCharacterClick
         ).id(item?.id)
@@ -43,7 +43,7 @@ class CharacterSearchEpoxyController(
     }
 
     data class CharacterGridItemEpoxyModel(
-        val item: Characters?,
+        val item: Character?,
         private val onCharacterClick: (Int) -> Unit
     ) : ViewBindingKotlinModel<ModelCharacterListBinding>(R.layout.model_character_list) {
         override fun ModelCharacterListBinding.bind() {

@@ -6,6 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id "com.apollographql.apollo3" version "3.7.3"
 }
 
 //Epoxy
@@ -44,6 +45,10 @@ android {
         viewBinding true
     }
     buildToolsVersion '30.0.3'
+
+    apollo {
+        packageName.set("com.example.rickandmortywiki")
+    }
 }
 
 dependencies {
@@ -83,7 +88,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 
     // ViewModel Delegate
-    implementation "androidx.activity:activity-ktx:1.3.1"
+    implementation "androidx.activity:activity-ktx:1.6.1"
 
     // Coil
     implementation 'io.coil-kt:coil:2.0.0-rc02'
@@ -97,7 +102,7 @@ dependencies {
     annotationProcessor "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
     // Paging 3
-    def paging_version = "3.0.0"
+    def paging_version = "3.1.1"
     implementation "androidx.paging:paging-runtime:$paging_version"
 
     // Logging interceptor
@@ -109,4 +114,8 @@ dependencies {
 
     // facebook
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // Apollo Graphql
+    implementation 'com.apollographql.apollo3:apollo-runtime:3.7.3'
+
 }

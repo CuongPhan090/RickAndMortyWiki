@@ -8,15 +8,22 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentListOfCharacterBinding
 import com.example.rickandmortywiki.epoxy.uimodel.CharacterListPagingEpoxyController
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 
 class ListOfCharacterFragment : BaseFragment("List of Character") {
-    private lateinit var binding: FragmentListOfCharacterBinding
+    private var _binding: FragmentListOfCharacterBinding? = null
+    private val binding: FragmentListOfCharacterBinding?
+        get() = _binding
+
     private val characterListPagingEpoxyController =
         CharacterListPagingEpoxyController(::onCharacterClick)
     private val viewModel: SharedViewModel by viewModels()
@@ -26,18 +33,22 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentListOfCharacterBinding.inflate(layoutInflater)
+        _binding = FragmentListOfCharacterBinding.inflate(layoutInflater)
         navView = requireActivity().findViewById(R.id.nav_view)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.characterListRecyclerView.setController(characterListPagingEpoxyController)
+        binding?.characterListRecyclerView?.setController(characterListPagingEpoxyController)
 
-        viewModel.listOfCharacters.observe(viewLifecycleOwner) { pagedList ->
-            characterListPagingEpoxyController.submitList(pagedList)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.charactersPagination.collect { pagedList ->
+                    characterListPagingEpoxyController.submitData(pagedList)
+                }
+            }
         }
 
         val onBackPressed = object : OnBackPressedCallback(true) {
@@ -66,5 +77,6 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
     override fun onDestroyView() {
         super.onDestroyView()
         navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = false
+        _binding = null
     }
 }

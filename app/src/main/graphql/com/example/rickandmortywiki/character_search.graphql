@@ -1,0 +1,14 @@
+query characterSearch($pageId: Int!, $filter : FilterCharacter!) {
+    characters(page: $pageId, filter: $filter) {
+        info {
+            pages
+            next
+            prev
+        }
+        results {
+            id
+            name
+            image
+        }
+    }
+}

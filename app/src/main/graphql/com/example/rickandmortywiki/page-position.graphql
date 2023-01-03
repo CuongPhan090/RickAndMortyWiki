@@ -1,0 +1,5 @@
+fragment pagePosition on Info {
+    next
+    pages
+    prev
+}

@@ -1,0 +1,16 @@
+query episodes($pageNumber: Int!) {
+    episodes(page: $pageNumber) {
+        info {
+            pages
+            prev
+            next
+        }
+
+        results {
+            id
+            name
+            air_date
+            episode
+        }
+    }
+}

@@ -3,25 +3,33 @@ package com.example.rickandmortywiki.epoxy.uimodel
 import coil.load
 import com.airbnb.epoxy.EpoxyController
 import com.example.rickandmortywiki.R
-import com.example.rickandmortywiki.databinding.ModelCharacterListBinding
 import com.example.rickandmortywiki.databinding.ModelCharacterListSquareBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
-import com.example.rickandmortywiki.model.domain.Characters
+import com.example.rickandmortywiki.model.domain.Character
 
-class EpisodeDetailsEpoxyController(private val listOfCharacters: List<Characters>?): EpoxyController() {
+class EpisodeDetailsEpoxyController(
+    private val listOfCharacters: List<Character>?,
+    private val characterOnClick: (Int?) -> Any
+) : EpoxyController() {
     override fun buildModels() {
         listOfCharacters?.forEach {
-            CharacterEpoxyModel(it.image, it.name).id("${it.image}_${it.name}").addTo(this)
+            CharacterEpoxyModel(it.id, it.image, it.name, characterOnClick).id("${it.image}_${it.name}").addTo(this)
         }
     }
 
     data class CharacterEpoxyModel(
+        val id: Int?,
         val imageUrl: String?,
-        val name: String?
+        val name: String?,
+        val characterOnClick: (Int?) -> Any
     ): ViewBindingKotlinModel<ModelCharacterListSquareBinding>(R.layout.model_character_list_square) {
         override fun ModelCharacterListSquareBinding.bind() {
             characterImageView.load(imageUrl)
             characterNameTextView.text = name
+
+            root.setOnClickListener {
+                characterOnClick(id)
+            }
         }
     }
 }
