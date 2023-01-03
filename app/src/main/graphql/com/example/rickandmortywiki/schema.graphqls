@@ -168,7 +168,7 @@ type Episode {
 }
 
 input FilterCharacter {
-  name: String
+  name: String!
 
   status: String
 

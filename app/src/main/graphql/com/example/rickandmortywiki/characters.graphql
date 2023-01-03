@@ -1,0 +1,14 @@
+query characters($pageNumber: Int!) {
+    characters(page: $pageNumber) {
+        info {
+            next
+            pages
+            prev
+        }
+        results {
+            id
+            name
+            image
+        }
+    }
+}

@@ -2,15 +2,17 @@ package com.example.rickandmortywiki.data.pagination
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.apollographql.apollo3.api.Optional
 import com.example.rickandmortywiki.model.DataTransformUtils
-import com.example.rickandmortywiki.model.domain.Characters
+import com.example.rickandmortywiki.model.domain.Character
 import com.example.rickandmortywiki.repository.SharedRepository
+import com.example.rickandmortywiki.type.FilterCharacter
 
 class CharacterSearchPagingSource(
     private val apiRepository: SharedRepository,
     private val keyword: String?,
     private val localException: (LocalException) -> Unit
-) : PagingSource<Int, Characters>() {
+) : PagingSource<Int, Character>() {
 
     sealed class LocalException(
         val title: String? = null,
@@ -26,7 +28,7 @@ class CharacterSearchPagingSource(
         )
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Characters> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
         if (keyword.isNullOrEmpty()) {
             val exception = LocalException.EmptySearch
             localException(exception)
@@ -34,8 +36,7 @@ class CharacterSearchPagingSource(
         }
 
         val pageNumber = params.key ?: 1
-        val previousKey = if (pageNumber == 1) null else pageNumber - 1
-        val data = apiRepository.searchCharacter(keyword, pageNumber)
+        val data = apiRepository.searchCharacter(pageNumber, FilterCharacter(name = keyword))
         if (data == null) {
             val exception = LocalException.NoResult
             localException(exception)
@@ -43,15 +44,13 @@ class CharacterSearchPagingSource(
         }
 
         return LoadResult.Page(
-            data = data.results?.map {
-                DataTransformUtils.transformCharacterResponseToCharacter(it)
-            } ?: emptyList(),
-            prevKey = previousKey,
-            nextKey = getPageIndexFromNext(data?.info?.next),
+            data = data.characters,
+            prevKey = data.info.prev,
+            nextKey = data.info.next
         )
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Characters>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
         // Try to find the page key of the closest page to anchorPosition, from
         // either the prevKey or the nextKey, but you need to handle nullability
         // here:
@@ -63,9 +62,5 @@ class CharacterSearchPagingSource(
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
-    }
-
-    private fun getPageIndexFromNext(next: String?): Int? {
-        return next?.split("page=")?.get(1)?.split('&')?.get(0)?.toInt()
     }
 }

@@ -1,0 +1,5 @@
+fragment characterBasic on Character {
+    id
+    name
+    image
+}

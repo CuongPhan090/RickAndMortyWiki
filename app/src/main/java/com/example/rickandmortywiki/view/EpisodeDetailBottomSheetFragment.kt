@@ -45,7 +45,7 @@ class EpisodeDetailBottomSheetFragment : BottomSheetDialogFragment() {
                 }
             }
         }
-        viewModel.fetchEpisode(navArgs.episodeId)
+        viewModel.fetchEpisode(navArgs.episodeId.toString())
     }
 
     private fun bindData(episode: Episode?) {

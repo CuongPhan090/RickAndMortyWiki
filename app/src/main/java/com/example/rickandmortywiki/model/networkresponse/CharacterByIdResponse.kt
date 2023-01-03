@@ -11,9 +11,9 @@ data class GetListOfCharacter(
 @JsonClass(generateAdapter = true)
 data class Info(
     val count: Int? = 0,
-    val next: String? = null,
+    val next: Int? = null,
     val pages: Int? = 0,
-    val prev: Any? = null
+    val prev: Int? = null
 )
 
 @JsonClass(generateAdapter = true)
@@ -21,7 +21,7 @@ data class CharacterByIdResponse(
     val created: String? = null,
     val episode: List<String>? = null,
     val gender: String? = null,
-    val id: Int? = null,
+    val id: String? = null,
     val image: String? = null,
     val location: Location? = null,
     val name: String? = null,

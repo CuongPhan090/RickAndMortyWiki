@@ -2,7 +2,6 @@ package com.example.rickandmortywiki.epoxy.uimodel
 
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import coil.load
@@ -12,11 +11,11 @@ import com.airbnb.epoxy.EpoxyController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.*
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
-import com.example.rickandmortywiki.model.domain.Characters
+import com.example.rickandmortywiki.model.domain.Character
 import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.util.NumberUtils.toPx
 
-class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : EpoxyController() {
+class CharacterDetailsEpoxyController(private val onClickEpisode: (Int?) -> Unit) : EpoxyController() {
     // if data is being fetched, display progress bar
     var isLoading: Boolean = true
         set(value) {
@@ -27,7 +26,7 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
         }
 
     // remove progress bar once data has been fetched
-    var charactersResponse: Characters? = null
+    var characterResponse: Character? = null
         set(value) {
             field = value
             if (field != null) {
@@ -38,27 +37,27 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
 
     // called when UI update requested
     override fun buildModels() {
-        if (charactersResponse == null) {
+        if (characterResponse == null) {
             // TODO: Handle error
             return
         }
 
         // add header model
         HeaderEpoxyModel(
-            name = charactersResponse?.name,
-            gender = charactersResponse?.gender,
-            status = charactersResponse?.status
+            name = characterResponse?.name,
+            gender = characterResponse?.gender,
+            status = characterResponse?.status
         ).id("header").addTo(this)
 
         // add image model
         ImageEpoxyModel(
-            image = charactersResponse?.image
+            image = characterResponse?.image
         ).id("image").addTo(this)
 
         // add episode carousel item
-        charactersResponse?.episode?.let { episodes ->
+        characterResponse?.episode?.let { episodes ->
             if (episodes.isNotEmpty()) {
-                val listOfEpisode = charactersResponse?.episode?.map {
+                val listOfEpisode = characterResponse?.episode?.map {
                     EpisodeCarouselEpoxyModel(it, onClickEpisode).id(it.id)
                 }
 
@@ -74,7 +73,7 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
                 }
             }
         } ?: run {
-            // add data points model
+            // shimmering view
             EpisodeHeader(headerText = null).id("episodes").addTo(this)
 
             CarouselModel_()
@@ -90,15 +89,14 @@ class CharacterDetailsEpoxyController(val onClickEpisode: (Int?) -> Unit) : Epox
                 .addTo(this)
         }
 
-        // add data points model
         DataPointsEpoxyModel(
             title = "Origin",
-            description = charactersResponse?.origin?.name
+            description = characterResponse?.origin?.name
         ).id("origin").addTo(this)
 
         DataPointsEpoxyModel(
             title = "Specie",
-            description = charactersResponse?.species
+            description = characterResponse?.species
         ).id("specie").addTo(this)
     }
 

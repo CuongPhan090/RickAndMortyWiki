@@ -2,16 +2,18 @@ package com.example.rickandmortywiki.epoxy.uimodel
 
 import coil.load
 import com.airbnb.epoxy.EpoxyModel
-import com.airbnb.epoxy.paging.PagedListEpoxyController
+import com.airbnb.epoxy.paging3.PagingDataEpoxyController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.ModelCharacterListBinding
 import com.example.rickandmortywiki.databinding.ModelCharacterListTitleBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
 import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 
+@OptIn(ObsoleteCoroutinesApi::class)
 class CharacterListPagingEpoxyController(
     private val onCharacterClick: (Int) -> Unit
-) : PagedListEpoxyController<CharacterByIdResponse>() {
+) : PagingDataEpoxyController<CharacterByIdResponse>() {
     override fun buildItemModel(
         currentPosition: Int,
         item: CharacterByIdResponse?
@@ -49,7 +51,7 @@ class CharacterListPagingEpoxyController(
                 characterNameTextView.text = character.name
                 character.id?.let {
                     root.setOnClickListener {
-                        onCharacterClick(character.id)
+                        onCharacterClick(character.id.toInt())
                     }
                 }
             }
