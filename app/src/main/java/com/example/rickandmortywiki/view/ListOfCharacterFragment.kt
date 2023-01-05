@@ -42,6 +42,12 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.characterListRecyclerView?.setController(characterListPagingEpoxyController)
+//
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                characterListPagingEpoxyController.submitData()
+//            }
+//        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

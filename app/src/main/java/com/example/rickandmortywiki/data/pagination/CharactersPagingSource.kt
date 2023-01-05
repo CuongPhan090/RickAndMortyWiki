@@ -9,9 +9,7 @@ class CharactersPagingSource(
     private val sharedRepository: SharedRepository
 ): PagingSource<Int, CharacterByIdResponse>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterByIdResponse> {
-        val pageNumber = params.key ?: 1
-
-        val response = sharedRepository.getCharacters(pageNumber)
+        val response = sharedRepository.getCharacters( params.key ?: 1)
         return LoadResult.Page(
             response?.results ?: emptyList(),
             response?.info?.prev,

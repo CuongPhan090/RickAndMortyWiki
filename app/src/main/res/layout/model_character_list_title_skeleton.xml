@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    app:cardBackgroundColor="#E4E4E4"
+    app:cardBackgroundColor="#DDDDDD"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,19 +19,6 @@
             android:paddingStart="8dp"
             android:textColor="?colorOnSurface"
             android:textSize="24sp"
-            android:textStyle="bold|italic"
-            tools:text="Header Text" />
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/model_character_list_title_shimmering"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:shimmer_repeat_mode="restart"
-            app:shimmer_shape="linear">
-
-            <include layout="@layout/model_character_list_title_skeleton" />
-        </com.facebook.shimmer.ShimmerFrameLayout>
+            android:textStyle="bold|italic" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.cardview.widget.CardView>
