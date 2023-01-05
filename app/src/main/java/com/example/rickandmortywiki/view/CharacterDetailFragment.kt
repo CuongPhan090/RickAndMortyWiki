@@ -1,8 +1,6 @@
 package com.example.rickandmortywiki.view
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +29,6 @@ class CharacterDetailFragment : BaseFragment("Character Detail") {
     private val viewModel: SharedViewModel by viewModels()
     private val epoxyController = CharacterDetailsEpoxyController(::onClickEpisode)
     private val args: CharacterDetailFragmentArgs by navArgs()
-    private val handler: Handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +56,7 @@ class CharacterDetailFragment : BaseFragment("Character Detail") {
 
 
     private fun setUpAnimation() {
-        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val fadeOut = AlphaAnimation(1f, 0f).apply {
                     interpolator = AccelerateInterpolator()
@@ -70,11 +67,12 @@ class CharacterDetailFragment : BaseFragment("Character Detail") {
                     addAnimation(fadeOut)
                 }
                 binding?.root?.animation = animation
-                findNavController().popBackStack()
+
+                findNavController().navigateUp()
             }
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
 
         val fadeIn = AlphaAnimation(0f, 1f).apply {
             interpolator = DecelerateInterpolator()
@@ -99,6 +97,7 @@ class CharacterDetailFragment : BaseFragment("Character Detail") {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
     }
 }
