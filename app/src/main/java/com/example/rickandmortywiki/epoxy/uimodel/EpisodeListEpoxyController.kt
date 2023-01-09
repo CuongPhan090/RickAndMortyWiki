@@ -6,7 +6,6 @@ import com.airbnb.epoxy.paging3.PagingDataEpoxyController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.ModelCharacterListTitleBinding
 import com.example.rickandmortywiki.databinding.ModelEpisodeListItemBinding
-import com.example.rickandmortywiki.databinding.ModelHeaderBinding
 import com.example.rickandmortywiki.epoxy.ViewBindingKotlinModel
 import com.example.rickandmortywiki.model.EpisodeUiModel
 import com.example.rickandmortywiki.model.domain.Episode

@@ -2,8 +2,6 @@ package com.example.rickandmortywiki.data.pagination
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.apollographql.apollo3.api.Optional
-import com.example.rickandmortywiki.model.DataTransformUtils
 import com.example.rickandmortywiki.model.domain.Character
 import com.example.rickandmortywiki.repository.SharedRepository
 import com.example.rickandmortywiki.type.FilterCharacter

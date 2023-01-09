@@ -2,7 +2,10 @@ package com.example.rickandmortywiki.model
 
 import com.example.rickandmortywiki.*
 import com.example.rickandmortywiki.model.domain.*
-import com.example.rickandmortywiki.model.networkresponse.*
+import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
+import com.example.rickandmortywiki.model.networkresponse.GetListOfCharacter
+import com.example.rickandmortywiki.model.networkresponse.Info
+import com.example.rickandmortywiki.model.networkresponse.Origin
 
 object DataTransformUtils {
 

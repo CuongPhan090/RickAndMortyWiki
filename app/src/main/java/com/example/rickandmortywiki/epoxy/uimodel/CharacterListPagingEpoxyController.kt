@@ -15,6 +15,9 @@ import kotlinx.coroutines.ObsoleteCoroutinesApi
 class CharacterListPagingEpoxyController(
     private val onCharacterClick: (Int) -> Unit
 ) : PagingDataEpoxyController<CharacterByIdResponse>() {
+
+    var showShimmering = true
+
     override fun buildItemModel(
         currentPosition: Int,
         item: CharacterByIdResponse?
@@ -24,15 +27,13 @@ class CharacterListPagingEpoxyController(
 
     // Create different section in the scroll view
     override fun addModels(models: List<EpoxyModel<*>>) {
-        if (models.isEmpty()) {
-//            CharacterListTitleEpoxyModel(title = null).id("characterListTitleSkeleton").addTo(this)
-//            super.addModels(
-//                MutableList(5) {
-//                    CharacterGridItemEpoxyModel(null, null)
-//                }.toList()
-//            )
-
-            LoadingEpoxyModel().id("loadingCharacterList").addTo(this)
+        if (showShimmering || models.isEmpty()) {
+            CharacterListTitleEpoxyModel(title = null).id("characterListTitleSkeleton").addTo(this)
+            super.addModels(
+                MutableList(6) {
+                    CharacterGridItemEpoxyModel(null, null).id(it)
+                }.toList()
+            )
             return
         }
 

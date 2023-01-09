@@ -41,17 +41,12 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.characterListRecyclerView?.setController(characterListPagingEpoxyController)
-//
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                characterListPagingEpoxyController.submitData()
-//            }
-//        }
+        binding?.characterListRecyclerView?.setControllerAndBuildModels(characterListPagingEpoxyController)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.charactersPagination.collect { pagedList ->
+                    characterListPagingEpoxyController.showShimmering = false
                     characterListPagingEpoxyController.submitData(pagedList)
                 }
             }

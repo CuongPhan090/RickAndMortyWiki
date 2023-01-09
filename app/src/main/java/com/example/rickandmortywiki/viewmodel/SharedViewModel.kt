@@ -2,22 +2,17 @@ package com.example.rickandmortywiki.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
-import androidx.paging.insertSeparators
+import androidx.paging.*
 import com.example.rickandmortywiki.data.pagination.CharacterSearchPagingSource
 import com.example.rickandmortywiki.data.pagination.CharactersPagingSource
 import com.example.rickandmortywiki.data.pagination.EpisodePagingSource
 import com.example.rickandmortywiki.model.EpisodeUiModel
 import com.example.rickandmortywiki.model.domain.Character
 import com.example.rickandmortywiki.model.domain.Episode
+import com.example.rickandmortywiki.model.networkresponse.CharacterByIdResponse
 import com.example.rickandmortywiki.repository.SharedRepository
 import com.example.rickandmortywiki.util.Event
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 private const val PAGE_SIZE = 20
@@ -67,7 +62,6 @@ class SharedViewModel : ViewModel() {
     val localExceptionEvent: StateFlow<Event<CharacterSearchPagingSource.LocalException>>
         get() = _localExceptionEvent.asStateFlow()
 
-
     private var currentUserSearch: String? = null
     private var pagingSource: CharacterSearchPagingSource? = null
         get() {
@@ -90,7 +84,7 @@ class SharedViewModel : ViewModel() {
     }.flow.cachedIn(viewModelScope)
 
 
-    val charactersPagination = Pager(
+    val charactersPagination: Flow<PagingData<CharacterByIdResponse>> = Pager(
         PagingConfig(
             pageSize = PAGE_SIZE,
             prefetchDistance = PREFETCH_DISTANCE,

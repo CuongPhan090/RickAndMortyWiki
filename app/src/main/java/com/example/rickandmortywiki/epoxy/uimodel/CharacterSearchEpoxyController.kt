@@ -13,7 +13,7 @@ import kotlinx.coroutines.ObsoleteCoroutinesApi
 
 @ObsoleteCoroutinesApi
 class CharacterSearchEpoxyController(
-    private val onCharacterClick: (Int) -> Unit,
+    private val onCharacterClick: (Int) -> Unit
 ) : PagingDataEpoxyController<Character>() {
 
     var localException: CharacterSearchPagingSource.LocalException? = null

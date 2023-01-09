@@ -10,9 +10,7 @@ class EpisodePagingSource(
 ): PagingSource<Int, EpisodeUiModel>() {
     // this function will invoke every time it needs to load a new page
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EpisodeUiModel> {
-        val pageNumber = params.key ?: 1
-
-        val response = apiRepository.getEpisodes(pageNumber)
+        val response = apiRepository.getEpisodes(params.key ?: 1)
 
         val x =  response?.episode?.map {
             EpisodeUiModel.Item(
