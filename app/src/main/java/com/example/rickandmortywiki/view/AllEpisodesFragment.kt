@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentAllEpisodesBinding
-import com.example.rickandmortywiki.epoxy.uimodel.EpisodeListEpoxyController
+import com.example.rickandmortywiki.epoxy.controller.EpisodeListEpoxyController
 import com.example.rickandmortywiki.model.EpisodeUiModel
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import com.google.android.material.navigation.NavigationView

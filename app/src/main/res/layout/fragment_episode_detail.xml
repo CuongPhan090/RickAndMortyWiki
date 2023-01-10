@@ -82,5 +82,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/character_title"
         tools:itemCount="4"
-        tools:listitem="@layout/model_character_list_square" />
+        tools:listitem="@layout/model_character_carousel" />
 </androidx.constraintlayout.widget.ConstraintLayout>

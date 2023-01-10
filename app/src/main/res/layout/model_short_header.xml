@@ -25,7 +25,7 @@
         app:shimmer_repeat_mode="restart"
         app:shimmer_shape="linear">
 
-        <include layout="@layout/model_header_skeleton" />
+        <include layout="@layout/model_short_header_skeleton" />
     </com.facebook.shimmer.ShimmerFrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentEpisodeDetailBinding
-import com.example.rickandmortywiki.epoxy.uimodel.EpisodeDetailsEpoxyController
+import com.example.rickandmortywiki.epoxy.controller.EpisodeDetailsEpoxyController
 import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

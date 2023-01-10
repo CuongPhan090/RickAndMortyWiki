@@ -14,7 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentListOfCharacterBinding
-import com.example.rickandmortywiki.epoxy.uimodel.CharacterListPagingEpoxyController
+import com.example.rickandmortywiki.epoxy.controller.CharacterListPagingEpoxyController
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch

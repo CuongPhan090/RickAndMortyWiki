@@ -33,7 +33,7 @@
             app:shimmer_repeat_mode="restart"
             app:shimmer_shape="linear">
 
-            <include layout="@layout/model_character_list_title_skeleton" />
+            <include layout="@layout/model_long_header_skeleton" />
         </com.facebook.shimmer.ShimmerFrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentCharacterDetailBinding
-import com.example.rickandmortywiki.epoxy.uimodel.CharacterDetailsEpoxyController
+import com.example.rickandmortywiki.epoxy.controller.CharacterDetailsEpoxyController
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
 
@@ -43,7 +43,7 @@ class CharacterDetailFragment : BaseFragment("Character Detail") {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.characterDetail.collect { character ->
-                    epoxyController.characterResponse = character
+                    epoxyController.character = character
                 }
             }
         }
