@@ -14,7 +14,7 @@ import kotlinx.coroutines.ObsoleteCoroutinesApi
 
 @ObsoleteCoroutinesApi
 class EpisodeListEpoxyController(
-    private val onEpisodeClick: ((Int) -> Unit)?
+    private val onEpisodeClick: (Int) -> Unit
 ): PagingDataEpoxyController<EpisodeUiModel>() {
 
     var showShimmering = true
@@ -55,11 +55,12 @@ class EpisodeListEpoxyController(
                 episodeName.text = it.name
                 episodeNumber.text = it.getFormattedSeasonTruncated()
                 episodeAirDay.text = it.airDate
-                episodeListItemCardView.setOnClickListener{ view ->
-                    view?.id?.let { id ->
+                it.id?.let { id ->
+                    root.setOnClickListener {
                         onClick?.let { it1 -> it1(id) }
                     }
                 }
+
             } ?: run {
                 episodeListItemEpoxyModelShimmering(true, this)
             }

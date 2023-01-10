@@ -1,8 +1,6 @@
 package com.example.rickandmortywiki.epoxy.uimodel
 
-import android.os.Build
 import android.view.View
-import androidx.annotation.RequiresApi
 import coil.load
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging3.PagingDataEpoxyController
