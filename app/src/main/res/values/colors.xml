@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="shimmer_view_background">#DDDDDD</color>
+    <color name="card_background_color">#E4E4E4</color>
+
 </resources>

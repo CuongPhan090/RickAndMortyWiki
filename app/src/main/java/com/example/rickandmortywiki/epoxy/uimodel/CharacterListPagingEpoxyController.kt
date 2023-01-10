@@ -1,6 +1,8 @@
 package com.example.rickandmortywiki.epoxy.uimodel
 
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
 import coil.load
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging3.PagingDataEpoxyController
@@ -106,6 +108,7 @@ class CharacterListPagingEpoxyController(
                 binding.modelCharacterListTitle.visibility = View.VISIBLE
                 binding.modelCharacterListTitleShimmering.visibility = View.GONE
                 binding.modelCharacterListTitleShimmering.stopShimmer()
+                binding.root.setCardBackgroundColor(binding.root.resources.getColor(R.color.card_background_color, binding.root.context.theme))
             }
         }
 

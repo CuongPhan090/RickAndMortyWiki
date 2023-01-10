@@ -222,7 +222,6 @@ class CharacterDetailsEpoxyController(private val onClickEpisode: (Int?) -> Unit
         val episode: Episode?,
         val onClick: (Int?) -> Unit
     ) : ViewBindingKotlinModel<ModelEpisodeCarouselItemsBinding>(R.layout.model_episode_carousel_items) {
-        @RequiresApi(Build.VERSION_CODES.M)
         override fun ModelEpisodeCarouselItemsBinding.bind() {
             episode?.let { episodeDetails ->
                 showShimmerEpisodeCarousel(false, this)
@@ -237,7 +236,6 @@ class CharacterDetailsEpoxyController(private val onClickEpisode: (Int?) -> Unit
             }
         }
 
-        @RequiresApi(Build.VERSION_CODES.M)
         private fun showShimmerEpisodeCarousel(
             show: Boolean,
             binding: ModelEpisodeCarouselItemsBinding
@@ -249,7 +247,7 @@ class CharacterDetailsEpoxyController(private val onClickEpisode: (Int?) -> Unit
                     episodeName.visibility = View.GONE
                     episodeAirDay.visibility = View.GONE
                     episodeSeason.visibility = View.GONE
-                    binding.root.strokeColor =
+                    root.strokeColor =
                         root.resources.getColor(R.color.shimmer_view_background, root.context.theme)
                 }
             } else {
@@ -259,7 +257,7 @@ class CharacterDetailsEpoxyController(private val onClickEpisode: (Int?) -> Unit
                     episodeName.visibility = View.VISIBLE
                     episodeAirDay.visibility = View.VISIBLE
                     episodeSeason.visibility = View.VISIBLE
-                    binding.root.strokeColor =
+                    root.strokeColor =
                         root.resources.getColor(R.color.black, root.context.theme)
                 }
             }

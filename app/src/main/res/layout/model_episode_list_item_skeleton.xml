@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     app:cardBackgroundColor="?colorSurface"
+    app:strokeColor="#DDDDDD"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,55 +15,32 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/episode_name"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
-            android:textColor="?colorOnSurface"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:background="#DDDDDD"
             app:layout_constraintBottom_toTopOf="@id/episode_air_day"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Episode name" />
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/episode_air_day"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:textColor="?colorOnSurface"
-            android:textSize="14sp"
-            android:textStyle="italic"
+            android:background="#DDDDDD"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/episode_name"
-            app:layout_constraintTop_toBottomOf="@id/episode_name"
-            tools:text="06/10/2020" />
+            app:layout_constraintTop_toBottomOf="@id/episode_name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/episode_number"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:background="#DDDDDD"
             android:padding="8dp"
-            android:textColor="?colorSurface"
-            android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="E01S01" />
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/model_episode_list_item_shimmering"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shimmer_repeat_mode="restart"
-            app:shimmer_shape="linear">
-
-            <include layout="@layout/model_episode_list_item_skeleton" />
-        </com.facebook.shimmer.ShimmerFrameLayout>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

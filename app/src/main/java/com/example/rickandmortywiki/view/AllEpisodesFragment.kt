@@ -41,10 +41,11 @@ class AllEpisodesFragment : BaseFragment("All Episode") {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.allEpisodeEpoxyRecyclerView?.setController(episodeListEpoxyController)
+        binding?.allEpisodeEpoxyRecyclerView?.setControllerAndBuildModels(episodeListEpoxyController)
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.allEpisodePagination.collectLatest { pagingData: PagingData<EpisodeUiModel> ->
+                    episodeListEpoxyController.showShimmering = false
                     episodeListEpoxyController.submitData(pagingData)
                 }
             }
