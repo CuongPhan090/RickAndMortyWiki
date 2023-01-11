@@ -78,6 +78,7 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 sharedViewModel.searchCharacterPagination.collect {
                     epoxyController.localException = null
+                    epoxyController.shimmering = false
                     epoxyController.submitData(it)
                 }
             }
