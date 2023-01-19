@@ -12,7 +12,7 @@ data class CharacterCarouselEpoxyModel(
     val characterOnClick: (Int?) -> Any
 ): ViewBindingKotlinModel<ModelCharacterCarouselBinding>(R.layout.model_character_carousel) {
     override fun ModelCharacterCarouselBinding.bind() {
-        characterImageView.load(imageUrl)
+        characterCarouselImageView.load(imageUrl)
         characterNameTextView.text = name
 
         root.setOnClickListener {

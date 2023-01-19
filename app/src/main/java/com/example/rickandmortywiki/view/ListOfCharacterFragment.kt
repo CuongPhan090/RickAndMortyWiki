@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.VisibleForTesting
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
@@ -18,29 +19,31 @@ import com.example.rickandmortywiki.epoxy.controller.CharacterListPagingEpoxyCon
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
+import java.lang.reflect.Modifier
 
 class ListOfCharacterFragment : BaseFragment("List of Character") {
+
     private var _binding: FragmentListOfCharacterBinding? = null
-    private val binding: FragmentListOfCharacterBinding?
+    @VisibleForTesting(otherwise = Modifier.PRIVATE)
+    val binding: FragmentListOfCharacterBinding?
         get() = _binding
 
     private val characterListPagingEpoxyController =
         CharacterListPagingEpoxyController(::onCharacterClick)
     private val viewModel: SharedViewModel by viewModels()
-    private lateinit var navView: NavigationView
+    //private lateinit var navView: NavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentListOfCharacterBinding.inflate(layoutInflater)
-        navView = requireActivity().findViewById(R.id.nav_view)
+       // navView = requireActivity().findViewById(R.id.nav_view)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding?.characterListRecyclerView?.setControllerAndBuildModels(characterListPagingEpoxyController)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -52,22 +55,23 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
             }
         }
 
-        val onBackPressed = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout)
-                if (drawerLayout.isDrawerOpen(navView)) {
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                } else {
-                    requireActivity().finish()
-                }
-            }
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressed)
-        navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = true
+//        val onBackPressed = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout)
+//                if (drawerLayout.isDrawerOpen(navView)) {
+//                    drawerLayout.closeDrawer(GravityCompat.START)
+//                } else {
+//                    requireActivity().finish()
+//                }
+//            }
+//        }
+//
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressed)
+//        navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = true
     }
 
-    private fun onCharacterClick(index: Int) {
+    @VisibleForTesting(otherwise = Modifier.PRIVATE)
+    fun onCharacterClick(index: Int) {
         val direction =
             ListOfCharacterFragmentDirections.actionListOfCharacterFragmentToCharacterDetailFragment(
                 index
@@ -77,7 +81,7 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = false
+//        navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = false
         _binding = null
     }
 }

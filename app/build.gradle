@@ -7,7 +7,11 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id "com.apollographql.apollo3" version "3.7.3"
+    id 'jacoco'
 }
+
+apply from: "$project.rootDir/gradle/jacoco.gradle"
+
 
 //Epoxy
 kapt {
@@ -32,18 +36,33 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            testCoverageEnabled true
+        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
     buildFeatures {
         viewBinding true
     }
+
     buildToolsVersion '30.0.3'
 
     apollo {
@@ -62,9 +81,34 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.2'
     implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
+
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation 'androidx.test.ext:junit:1.1.5'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Fragment Navigation Test
+    testImplementation "androidx.navigation:navigation-testing:2.5.3"
+
+    // Google Assert
+    testImplementation "com.google.truth:truth:1.1.3"
+    androidTestImplementation "com.google.truth:truth:1.1.3"
+
+    // Fragment Scenario
+    debugImplementation 'androidx.fragment:fragment-testing:1.5.5'
+
+    // Mockk
+    def mockkVersion = "1.13.3"
+    testImplementation "io.mockk:mockk-android:${mockkVersion}"
+    testImplementation "io.mockk:mockk-agent:${mockkVersion}"
+
+    androidTestImplementation "io.mockk:mockk-android:${mockkVersion}"
+    androidTestImplementation "io.mockk:mockk-agent:${mockkVersion}"
+
+    // Robolectric
+    testImplementation 'org.robolectric:robolectric:4.9'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -117,5 +161,4 @@ dependencies {
 
     // Apollo Graphql
     implementation 'com.apollographql.apollo3:apollo-runtime:3.7.3'
-
 }
