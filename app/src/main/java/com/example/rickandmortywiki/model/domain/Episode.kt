@@ -9,10 +9,12 @@ data class Episode(
     val characters: List<Character>? = emptyList()
 ) {
     fun getFormattedSeason(): String {
+        if (season == null && episode == null) return ""
         return "Season $season Episode $episode"
     }
 
     fun getFormattedSeasonTruncated(): String {
+        if (season == null && episode == null) return ""
         return "S.$season E.$episode"
     }
 }

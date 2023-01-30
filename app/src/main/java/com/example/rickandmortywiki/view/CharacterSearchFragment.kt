@@ -15,7 +15,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentCharacterSearchBinding
 import com.example.rickandmortywiki.epoxy.controller.CharacterSearchEpoxyController
+import com.example.rickandmortywiki.repository.SharedRepository
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
+import com.example.rickandmortywiki.viewmodel.SharedViewModelFactory
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.Runnable
@@ -30,9 +32,8 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
 
     private var currentText: String = ""
     private val handler: Handler = Handler(Looper.getMainLooper())
-    private val sharedViewModel: SharedViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by viewModels{ SharedViewModelFactory(SharedRepository()) }
     private val epoxyController = CharacterSearchEpoxyController(::onCharacterClick)
-    private lateinit var navView: NavigationView
 
     private val runnable: Runnable = Runnable {
         sharedViewModel.submitQuery(currentText)
@@ -44,7 +45,6 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCharacterSearchBinding.inflate(inflater)
-        navView = requireActivity().findViewById(R.id.nav_view)
         return binding?.root
     }
 
@@ -82,8 +82,6 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
                     epoxyController.submitData(it)
                 }
             }
-
-            navView.menu.findItem(R.id.characterSearchFragment).isChecked = true
         }
     }
 
@@ -93,7 +91,6 @@ class CharacterSearchFragment : BaseFragment("Search Character") {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        navView.menu.findItem(R.id.characterSearchFragment).isChecked = false
         _binding = null
     }
 }

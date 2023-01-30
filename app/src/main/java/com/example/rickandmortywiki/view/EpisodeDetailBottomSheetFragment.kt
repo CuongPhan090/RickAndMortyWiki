@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -13,17 +16,22 @@ import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentEpisodeDetailBinding
 import com.example.rickandmortywiki.epoxy.controller.EpisodeDetailsEpoxyController
 import com.example.rickandmortywiki.model.domain.Episode
+import com.example.rickandmortywiki.repository.SharedRepository
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
+import com.example.rickandmortywiki.viewmodel.SharedViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
+import java.lang.reflect.Modifier
 
 class EpisodeDetailBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentEpisodeDetailBinding? = null
-    private val binding: FragmentEpisodeDetailBinding?
+
+    @VisibleForTesting(otherwise = Modifier.PRIVATE)
+    val binding: FragmentEpisodeDetailBinding?
         get() = _binding
 
-    private val viewModel: SharedViewModel by viewModels()
+    private val viewModel: SharedViewModel by viewModels { SharedViewModelFactory(SharedRepository()) }
 
     private val navArgs: EpisodeDetailBottomSheetFragmentArgs by navArgs()
 
@@ -56,10 +64,19 @@ class EpisodeDetailBottomSheetFragment : BottomSheetDialogFragment() {
             it.seasonEpisodeNumber.text = episode?.getFormattedSeason()
             it.charactersCarousel.setControllerAndBuildModels(
                 EpisodeDetailsEpoxyController(episode?.characters) { id ->
-                    findNavController().navigate(EpisodeDetailBottomSheetFragmentDirections.actionEpisodeDetailBottomSheetFragmentToCharacterDetailFragment(id ?: -1))
+                    onEpisodeDetailClick(id)
                 }
             )
         }
+    }
+
+    @VisibleForTesting(otherwise = Modifier.PRIVATE)
+    fun onEpisodeDetailClick(index: Int?) {
+        val direction =
+            EpisodeDetailBottomSheetFragmentDirections.actionEpisodeDetailBottomSheetFragmentToCharacterDetailFragment(
+                index ?: -1
+            )
+        findNavController().navigate(directions = direction)
     }
 
     override fun onDestroyView() {

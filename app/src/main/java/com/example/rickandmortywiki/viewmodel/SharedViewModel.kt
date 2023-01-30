@@ -18,8 +18,7 @@ import kotlinx.coroutines.launch
 private const val PAGE_SIZE = 20
 private const val PREFETCH_DISTANCE = PAGE_SIZE * 2 // page size x 2 or 3
 
-class SharedViewModel : ViewModel() {
-    private val apiRepository = SharedRepository()
+class SharedViewModel(private val apiRepository: SharedRepository) : ViewModel() {
 
     val allEpisodePagination = Pager(
         PagingConfig(

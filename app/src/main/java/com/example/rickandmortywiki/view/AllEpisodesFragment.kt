@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,27 +15,29 @@ import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentAllEpisodesBinding
 import com.example.rickandmortywiki.epoxy.controller.EpisodeListEpoxyController
 import com.example.rickandmortywiki.model.EpisodeUiModel
+import com.example.rickandmortywiki.repository.SharedRepository
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
+import com.example.rickandmortywiki.viewmodel.SharedViewModelFactory
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.lang.reflect.Modifier
 
 class AllEpisodesFragment : BaseFragment("All Episode") {
 
     private var _binding: FragmentAllEpisodesBinding? = null
-    private val binding
+    @VisibleForTesting(otherwise = Modifier.PRIVATE)
+    val binding
         get() = _binding
 
-    private val viewModel: SharedViewModel by viewModels()
+    private val viewModel: SharedViewModel by viewModels{ SharedViewModelFactory(SharedRepository()) }
     private val episodeListEpoxyController = EpisodeListEpoxyController(::onEpisodeClick)
-    private lateinit var navView: NavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAllEpisodesBinding.inflate(layoutInflater)
-        navView = requireActivity().findViewById(R.id.nav_view)
         return binding?.root
     }
 
@@ -50,16 +53,15 @@ class AllEpisodesFragment : BaseFragment("All Episode") {
                 }
             }
         }
-        navView.menu.findItem(R.id.allEpisodesFragment).isChecked = true
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        navView.menu.findItem(R.id.allEpisodesFragment).isChecked = false
         _binding = null
     }
 
-    private fun onEpisodeClick(episodeNumber: Int) {
+    @VisibleForTesting(otherwise = Modifier.PRIVATE)
+    fun onEpisodeClick(episodeNumber: Int) {
         findNavController().navigate(AllEpisodesFragmentDirections.actionAllEpisodesFragmentToEpisodeDetailBottomSheetFragment(episodeNumber))
     }
 }

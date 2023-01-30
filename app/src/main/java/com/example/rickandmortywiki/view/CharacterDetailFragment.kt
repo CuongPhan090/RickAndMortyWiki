@@ -17,7 +17,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.rickandmortywiki.databinding.FragmentCharacterDetailBinding
 import com.example.rickandmortywiki.epoxy.controller.CharacterDetailsEpoxyController
+import com.example.rickandmortywiki.repository.SharedRepository
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
+import com.example.rickandmortywiki.viewmodel.SharedViewModelFactory
 import kotlinx.coroutines.launch
 
 class CharacterDetailFragment : BaseFragment("Character Detail") {
@@ -26,7 +28,7 @@ class CharacterDetailFragment : BaseFragment("Character Detail") {
     private val binding: FragmentCharacterDetailBinding?
         get() = _binding
 
-    private val viewModel: SharedViewModel by viewModels()
+    private val viewModel: SharedViewModel by viewModels{ SharedViewModelFactory(SharedRepository()) }
     private val epoxyController = CharacterDetailsEpoxyController(::onClickEpisode)
     private val args: CharacterDetailFragmentArgs by navArgs()
 

@@ -3,6 +3,7 @@ package com.example.rickandmortywiki.view
 import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
@@ -36,6 +37,7 @@ class ListOfCharacterFragmentTest {
         FirebaseApp.initializeApp(context)
     }
 
+    // Combination of FragmentScenario, Espresso and TestNavHostController
     @Test
     fun `test onClick`() {
         // Create a TestNavHostController
@@ -60,5 +62,18 @@ class ListOfCharacterFragmentTest {
         }
 
         assertThat(navController.currentDestination?.id).isEqualTo(R.id.characterDetailFragment)
+    }
+
+    @Test
+    fun `make sure binding is collected by Garbage Collector when view is on destroy state`() {
+        val scenario = launchFragmentInContainer<ListOfCharacterFragment>(
+            themeResId = R.style.Theme_RickAndMortyWiki
+        )
+
+        scenario.onFragment {
+            assertThat(it.binding).isNotNull()
+            scenario.moveToState(Lifecycle.State.DESTROYED)
+            assertThat(it.binding).isNull()
+        }
     }
 }

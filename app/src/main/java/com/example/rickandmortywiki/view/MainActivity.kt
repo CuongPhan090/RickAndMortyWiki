@@ -1,8 +1,12 @@
 package com.example.rickandmortywiki.view
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -41,6 +45,17 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setupWithNavController(navController)
         binding.navView.setCheckedItem(navController.graph.startDestinationId)
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+            navController.currentBackStackEntry?.destination?.id?.let {
+                binding.navView.setCheckedItem(it)
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

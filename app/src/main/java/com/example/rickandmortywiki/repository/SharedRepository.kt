@@ -8,7 +8,7 @@ import com.example.rickandmortywiki.model.domain.Episode
 import com.example.rickandmortywiki.model.domain.EpisodePagination
 import com.example.rickandmortywiki.model.networkresponse.GetListOfCharacter
 import com.example.rickandmortywiki.type.FilterCharacter
-
+//TODO: Is this repository singleton?
 class SharedRepository {
 
     suspend fun getCharacter(id: String): Character {

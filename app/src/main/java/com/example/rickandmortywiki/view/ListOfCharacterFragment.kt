@@ -16,7 +16,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.databinding.FragmentListOfCharacterBinding
 import com.example.rickandmortywiki.epoxy.controller.CharacterListPagingEpoxyController
+import com.example.rickandmortywiki.repository.SharedRepository
 import com.example.rickandmortywiki.viewmodel.SharedViewModel
+import com.example.rickandmortywiki.viewmodel.SharedViewModelFactory
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
 import java.lang.reflect.Modifier
@@ -30,15 +32,13 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
 
     private val characterListPagingEpoxyController =
         CharacterListPagingEpoxyController(::onCharacterClick)
-    private val viewModel: SharedViewModel by viewModels()
-    //private lateinit var navView: NavigationView
+    private val viewModel: SharedViewModel by viewModels{ SharedViewModelFactory(SharedRepository()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentListOfCharacterBinding.inflate(layoutInflater)
-       // navView = requireActivity().findViewById(R.id.nav_view)
         return binding?.root
     }
 
@@ -54,20 +54,6 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
                 }
             }
         }
-
-//        val onBackPressed = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout)
-//                if (drawerLayout.isDrawerOpen(navView)) {
-//                    drawerLayout.closeDrawer(GravityCompat.START)
-//                } else {
-//                    requireActivity().finish()
-//                }
-//            }
-//        }
-//
-//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressed)
-//        navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = true
     }
 
     @VisibleForTesting(otherwise = Modifier.PRIVATE)
@@ -81,7 +67,6 @@ class ListOfCharacterFragment : BaseFragment("List of Character") {
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        navView.menu.findItem(R.id.listOfCharacterFragment).isChecked = false
         _binding = null
     }
 }
