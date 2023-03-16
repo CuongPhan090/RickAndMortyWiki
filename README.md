@@ -1,5 +1,6 @@
 # RickAndMortyWiki
 
+This app is built based on SimpleMorty https://play.google.com/store/apps/details?id=com.dmp.simplemorty with better approach and optimization.
 ## Getting Started
 
 Follow these steps to clone the project and build the application
